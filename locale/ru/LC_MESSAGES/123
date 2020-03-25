@@ -1,0 +1,323 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-31 01:38+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\DjangoPizzaShop\settings.py:122
+msgid "English"
+msgstr "English"
+
+#: .\DjangoPizzaShop\settings.py:123
+msgid "Russian"
+msgstr "Русский"
+
+#: .\DjangoPizzaShop\urls.py:41
+msgid "Admin index title"
+msgstr "Панель администратора"
+
+#: .\DjangoPizzaShop\urls.py:42
+msgid "Admin site header"
+msgstr "Пекарня Печорин"
+
+#: .\DjangoPizzaShop\urls.py:43
+msgid "Admin title"
+msgstr "Начало"
+
+#: .\accounts\admin.py:42
+msgid "Personal info"
+msgstr "Персональная информация"
+
+#: .\accounts\admin.py:43
+msgid "Permissions"
+msgstr "Доступы"
+
+#: .\accounts\apps.py:7
+msgid "Users"
+msgstr "Пользователи"
+
+#: .\accounts\models.py:56 .\shop\models.py:30
+msgid "Phone"
+msgstr "Телефон"
+
+#: .\accounts\models.py:58
+msgctxt "User|Name"
+msgid "Name"
+msgstr "Имя"
+
+#: .\accounts\models.py:59
+msgid "Language"
+msgstr "Язык"
+
+#: .\catalog\apps.py:7
+msgid "Catalog"
+msgstr "Каталог"
+
+#: .\catalog\models.py:13
+msgctxt "Category|Name"
+msgid "Name"
+msgstr "Категория"
+
+#: .\catalog\models.py:19 .\catalog\models.py:30
+msgid "Category"
+msgstr "Категория"
+
+#: .\catalog\models.py:20
+msgid "Categories"
+msgstr "Категории"
+
+#: .\catalog\models.py:27
+msgctxt "Pizza|Name"
+msgid "Name"
+msgstr "Название"
+
+#: .\catalog\models.py:28
+msgid "Content"
+msgstr "Состав"
+
+#: .\catalog\models.py:29
+msgid "Description"
+msgstr "Описание"
+
+#: .\catalog\models.py:31
+msgid "Image"
+msgstr "Изображение"
+
+#: .\catalog\models.py:34 .\catalog\models.py:62
+msgid "Pizza"
+msgstr "Пирожок"
+
+#: .\catalog\models.py:35
+msgid "Pizzas"
+msgstr "Пирожки"
+
+#: .\catalog\models.py:56
+msgid "Small"
+msgstr "Фуршетные (5 по 70 гр.)"
+
+#: .\catalog\models.py:57
+msgid "Large"
+msgstr "Сытный (135 гр.)"
+
+#: .\catalog\models.py:58
+msgid "None"
+msgstr "Отсутствует"
+
+#: .\catalog\models.py:60
+msgid "Type"
+msgstr "Тип"
+
+#: .\catalog\models.py:61 .\shop\models.py:78
+msgid "Price"
+msgstr "Цена"
+
+#: .\catalog\models.py:63
+msgid "Active"
+msgstr "Основной"
+
+#: .\catalog\models.py:66 .\shop\models.py:67
+msgid "Size"
+msgstr "Размер"
+
+#: .\catalog\models.py:67
+msgid "Sizes"
+msgstr "Размеры"
+
+#: .\catalog\models.py:74
+msgid "Name"
+msgstr "Название"
+
+#: .\catalog\models.py:75
+msgid "Discount percent"
+msgstr "Скидка в %"
+
+#: .\catalog\models.py:76
+msgid "Discount value"
+msgstr "Скидка руб"
+
+#: .\catalog\models.py:77
+msgid "Start date"
+msgstr "Дата начала"
+
+#: .\catalog\models.py:78
+msgid "Expiration date"
+msgstr "Дата окончания"
+
+#: .\catalog\models.py:81
+msgid "Promo code groups"
+msgstr "Группы промо кодов"
+
+#: .\catalog\models.py:85
+msgid "Code"
+msgstr "Код"
+
+#: .\shop\admin.py:48
+msgid "Text names must be unique"
+msgstr "Текст должен быть уникален"
+
+#: .\shop\admin.py:51
+msgid "Text name must consist of small letters and digits"
+msgstr "Текст должен состоять только из маленьких латинских букв и цифр"
+
+#: .\shop\apps.py:7
+msgid "Shop"
+msgstr "Магазин"
+
+#: .\shop\models.py:31
+msgctxt "Order|Name"
+msgid "Order"
+msgstr "Имя"
+
+#: .\shop\models.py:33
+msgid "Created at"
+msgstr "Время создания"
+
+#: .\shop\models.py:34
+msgid "Delivery date"
+msgstr "Дата доставки"
+
+#: .\shop\models.py:38
+msgid "Delivery time"
+msgstr "Время доставки"
+
+#: .\shop\models.py:40
+msgid "Address"
+msgstr "Адрес"
+
+#: .\shop\models.py:41
+msgid "Comment"
+msgstr "Комментарий"
+
+#: .\shop\models.py:51
+msgid "Total price"
+msgstr "Общая стоимость"
+
+#: .\shop\models.py:57 .\shop\models.py:65
+msgid "Order"
+msgstr "Заказ"
+
+#: .\shop\models.py:58
+msgid "Orders"
+msgstr "Заказы"
+
+#: .\shop\models.py:66 .\shop\models.py:84
+msgid "Item"
+msgstr "Товар"
+
+#: .\shop\models.py:68
+msgid "Quantity"
+msgstr "Количество"
+
+#: .\shop\models.py:85
+msgid "Items"
+msgstr "Товары"
+
+#: .\shop\models.py:89
+msgid "Page name"
+msgstr "Заголовок страницы"
+
+#: .\shop\models.py:90
+msgid "Title"
+msgstr "Название страницы"
+
+#: .\shop\models.py:96 .\shop\models.py:109
+msgid "Page text"
+msgstr "Текст на страницах"
+
+#: .\shop\models.py:97 .\shop\models.py:110
+#, fuzzy
+#| msgid "Page text"
+msgid "Page texts"
+msgstr "Текст на страницах"
+
+#: .\shop\models.py:101
+msgid "Text"
+msgstr "Текст"
+
+#: .\shop\models.py:102
+#, fuzzy
+#| msgid "Page name"
+msgid "Text name"
+msgstr "Заголовок страницы"
+
+#: .\shop\templates\shop\base.html:36
+msgid "Page title"
+msgstr "Пекарня Печорин"
+
+#: .\shop\templates\shop\base.html:68 .\shop\templates\shop\home.html:61
+msgid "Cart"
+msgstr "Корзина"
+
+#: .\timetable\apps.py:7
+msgid "Timetable"
+msgstr "Расписание"
+
+#: .\timetable\models.py:7
+msgid "Monday"
+msgstr "Понедельник"
+
+#: .\timetable\models.py:8
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: .\timetable\models.py:9
+msgid "Wednesday"
+msgstr "Среда"
+
+#: .\timetable\models.py:10
+msgid "Thursday"
+msgstr "Четверг"
+
+#: .\timetable\models.py:11
+msgid "Friday"
+msgstr "Пятница"
+
+#: .\timetable\models.py:12
+msgid "Saturday"
+msgstr "Суббота"
+
+#: .\timetable\models.py:13
+msgid "Sunday"
+msgstr "Воскресенье"
+
+#: .\timetable\models.py:15
+msgid "Date"
+msgstr "Дата"
+
+#: .\timetable\models.py:19
+msgid "Day of the week"
+msgstr "День недели"
+
+#: .\timetable\models.py:21
+msgid "Working"
+msgstr "Рабочий"
+
+#: .\timetable\models.py:22
+msgid "Message"
+msgstr "Сообщение"
+
+#: .\timetable\models.py:25
+msgctxt "Meta|Date"
+msgid "Date"
+msgstr "Дата"
+
+#: .\timetable\models.py:26
+msgctxt "Meta|Dates"
+msgid "Dates"
+msgstr "Даты"

@@ -1,0 +1,7 @@
+{% extends "shop/base.html" %}
+{% block content %}
+    <h1>Timetable</h1>
+    {% for date in dates %}
+        <p>{{ date.date }}</p>
+    {% endfor %}
+{% endblock content %}

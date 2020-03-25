@@ -1,0 +1,7 @@
+venv*
+.idea*
+/static
+db.sqlite3
+/media/images/
+environment
+*.sock

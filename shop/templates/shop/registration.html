@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+
+
+    <h1>Registration</h1>
+
+    <div>
+        <div>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div>
+                    <button class="btn btn-secondary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% for obj in user_orders %}
+    <p>Object</p>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
+{% block body_extra %}
+    <script type="text/javascript" src="{% static 'shop/js/registration.js' %}"></script>
+{% endblock body_extra %}

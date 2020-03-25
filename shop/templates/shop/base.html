@@ -1,0 +1,254 @@
+{% load i18n %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+    <!--    Custom styles-->
+    <link href="https://fonts.googleapis.com/css?family=Pattaya|Vollkorn&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
+
+    <!--    Custom styles and scripts from another pages-->
+    {% block head_extra %}
+    {% endblock head_extra %}
+
+    <!-- Page-ico-name-->
+    <title>{% trans "Page title" %}</title>
+</head>
+
+
+<body>
+<div class="container all-body">
+    <header>
+        <div class="row">
+            <div class="col-brand_Special small_Screen-hide">
+                <a class="brand-block" href="/">
+                    <div class="size-max_150">
+                        <img src="/media/hardcode/logo.svg" class="" alt="pechorin">
+                    </div>
+                </a>
+            </div>
+            <div class="f-auto navbar-margin_Left ">
+                <div class="row shadow-navbar">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <div class="navbar-row_Custom">
+                            <div class="navbar-buttons_Custom" data-target="#navbarSupportedContent">
+                                <div class="row small-screen-orders-custom">
+                                    <div class="col-6 orders-custom_Cart">
+
+                                        {% if request.path == '/cart/' %}
+                                        {% elif request.path == '/order/' %}
+                                        {% else %}
+
+                                        <span class="nav-item">
+                                            <a id="cart" class="cart flex-row mr-3 justify-content-around"
+                                               href="/cart">
+                                                <span class="pr-2">{% trans 'Cart' %}</span>
+                                                <span class="totalQuantity pl-2"> </span>
+                                            </a>
+                                        </span>
+
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col-6 orders-custom_Toggler">
+                                        <button class="navbar-toggler align_Text-right "
+                                                type="button"
+                                                data-toggle="collapse"
+                                                data-target="#navbarSupportedContent"
+                                                aria-controls="navbarSupportedContent"
+                                                aria-expanded="false"
+                                                aria-label="Toggle navigation">
+                                            <span class="navbar-toggler-icon"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="navbar-content_Custom">
+                                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                                    <ul class="navbar-nav mr-auto bg-alert centering row justify-content-between">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/">{% trans 'Menu' %}<span class="sr-only">(current)</span></a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link centering" href="{% url 'shop:shop-about' %}">{% trans 'About' %}</a>
+                                        </li>
+
+                                        <li class="centering">
+                                            <div class="container information_On-navbar centering">
+                                                <p>Мы работаем с пн.-пт. с 8 до 19.00</p>
+                                            </div>
+                                        </li>
+                                        <li class="centering">
+                                            <div class="container information_On-navbar centering">
+                                                <p>+375 (33) 658-02-20</p>
+                                            </div>
+
+                                        </li>
+                                        <li class="centering justify-end">
+                                            <tr>
+                                                <th><a href="/"><i class="fas fa-camera fa-sm"
+                                                                   aria-hidden="true"></i></a>
+                                                </th>
+                                                <th><a href="/"><i class="fas fa-camera fa-sm"
+                                                                   aria-hidden="true"></i></a>
+                                                </th>
+                                                <th><a href="/"><i class="fas fa-camera fa-sm"
+                                                                   aria-hidden="true"></i></a>
+                                                </th>
+                                                <th><a href="/"><i class="fas fa-camera fa-sm"
+                                                                   aria-hidden="true"></i></a>
+                                                </th>
+                                            </tr>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <div class="row min-High-bar">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class="content-margin_Top min-vh-100">
+        {% block content %}{% endblock %}
+    </div>
+
+
+</div>
+<!-- Footer -->
+<footer class="page-footer font-small stylish-color-dark pt-4 mt-5 bg-dark text-footer">
+    <div class="container">
+        <!-- Footer Links -->
+        <div class="container text-center text-md-left">
+
+            <!-- Grid row -->
+            <div class="row">
+
+                <!-- Grid column -->
+                <div class="col-md-8 mx-auto">
+
+                    <!-- Content -->
+                    <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Реквизиты компании</h5>
+                    <p>Общество с ограниченной ответственностью «Печь Орин»</p>
+                    <p>220035, г. Минск, ул. Бачило, д. 18</p>
+                    <p>УНП 192810299</p>
+                    <p>Регистрационный номер в ТР РБ: 402852</p>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+                <div class="col-md-4 mx-auto">
+
+                    <!-- Links -->
+                    <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Контакты</h5>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>Телефон: +375 33 6580220</p>
+                        </li>
+                        <li>
+                            <a>E-mail: </a> <a>info@pechorin.by</a>
+                        </li>
+                        <li>
+                            <a>Сайт: </a> <a href="http://pechorin.by/">pechorin.by</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Links -->
+
+        <hr>
+
+        <div class="cards-images py-2 row justify-content-around align-items-center mx-5">
+            <a>
+                <img alt="maestro" src="/media/hardcode/mastercard_logo.png">
+            </a>
+            <a>
+                <img alt="belcard" src="/media/hardcode/belcard_logo.png">
+            </a>
+            <a>
+                <img alt="visa" src="/media/hardcode/visa_logo.png">
+            </a>
+            <a>
+                <img alt="halva" src="/media/hardcode/halva_logo.png">
+            </a>
+            <a>
+                <img alt="maestro" src="/media/hardcode/maestro_logo.png">
+            </a>
+            <a>
+                <img alt="mtbank" src="/media/hardcode/mtbank_logo.png">
+            </a>
+
+            <a target="_blank" href="https://bepaid.by/">
+                <img alt="bepaid" src="/media/hardcode/bepaid_logo.png">
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+            <a href="http://pechorin.by/"> pechorin.by</a>
+        </div>
+        <!-- Copyright -->
+    </div>
+
+
+</footer>
+<!-- Footer -->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer='defer'></script>-->
+<!--    Fall back to a local copy of jQuery if the CDN fails-->
+
+<script type="text/javascript" src="{% static 'shop/js/base.js' %}"></script>
+{% block body_extra %}{% endblock body_extra %}
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+    {% if user.is_authenticated %}
+        <h1>User profile</h1>
+        <p>Phone: {{ user.phone }}</p>
+        <p>Name: {{ user.first_name }}</p>
+        <div class="spoiler">
+            <input type="button" onclick="showSpoiler(this);" value="Change password"/>
+            <div class="inner" style="display:none;">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div>
+                        <button id="order-submit" class="btn btn-secondary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <meta http-equiv="refresh" content="0; URL={% url 'accounts:login' %}"/>
+    {% endif %}
+
+    {% for order in orders %}
+        <h6>Order {{ order.phone }}, sum: {{ order.total_price }}</h6>
+    {% endfor %}
+    </div>
+{% endblock content %}
+
+{% block body_extra %}
+    <script type="text/javascript" src="{% static 'shop/js/profile.js' %}" defer='defer'></script>
+{% endblock body_extra %}

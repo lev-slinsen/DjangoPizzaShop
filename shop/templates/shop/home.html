@@ -1,0 +1,235 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+
+<!--Carusel with images-->
+
+<div class="container">
+
+
+    <div class="bd-example big_Screen-show small_Screen-hide">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/media/hardcode/home/slide1.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+<!--                        <h5>First slide label</h5>-->
+<!--                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="/media/hardcode/home/slide2.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+<!--                        <h5>Second slide label</h5>-->
+<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="/media/hardcode/home/slide3.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+<!--                        <h5>Third slide label</h5>-->
+<!--                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>-->
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!--cart-sticky-screen-->
+<div class="orders-custom_Cart-sticky-top invisible">
+    <span class="justify-content-end d-flex align-items-end">
+        <a id="cart1" class="cart flex-row mr-3 p-3 justify-content-around"
+           href="/cart">
+            <span class=" pr-2">{% trans 'Cart' %}</span>
+            <span class="totalQuantity pl-2"> </span>
+        </a>
+    </span>
+</div>
+
+
+<!-- Control buttons -->
+<div id="category-filter" class="container border-Custom_bottom margin-top mt-2">
+    <div class="row">
+    <div class="mr-3 ml-2">
+        <button class="btn btn-filter active custom-btn_filter" filter="сеты">Готовые наборы</button>
+    </div>
+    <div class="mr-3 ml-2">
+        <button class="btn btn-filter" filter="70гр">Фуршетные (5 по 70 г.)</button>
+    </div>
+    <div class="mr-3 ml-2">
+        <button class="btn btn-filter" filter="135гр">Большие (135 г.)</button>
+    </div>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <!--Catalog-->
+    <div class="row mb-4" id="catalog">
+        {% for pizza in pizzas %}
+
+        <div class="mt-4 mr-4 filterDiv {{ pizza.categories_display }}">
+<!--            card-pizza-->
+            <div class="card rounded shadow centering" id="card-{{ pizza.id }}"
+                 data-id="{{ pizza.id }}"
+                 data-name="{{ pizza.name }}"
+                 data-quantity="1"
+                 {% for size in pizza.sizes.all %}
+                    {% if size.active %}
+                    data-size="{{ size.type }}"
+                    {% endif %}
+                 {% endfor %}
+                 data-image="{{ pizza.photo.url }}"
+                 data-price="{{ pizza.default_price }}">
+
+                <!--  Card with styles -->
+                <div class="card-body row">
+
+                    <!-- Central Modal Medium Warning -->
+                    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true" id="modal-{{ pizza.id }}"
+                         data-id="{{ pizza.id }}"
+                         data-name="{{ pizza.name }}"
+                         data-dscription="{{ pizza.description }}"
+                         data-price="{{ pizza.default_price }}">
+                        <div class="modal-dialog modal-notify modal-warning modal-lg" role="document">
+                            <!--Content-->
+                            <div class="modal-content">
+                                <!--Header-->
+                                <div class="modal-header text-weight-bolder">
+                                    <h2 class="heading text-weight-bolder">{{ pizza.name }}</h2>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="white-text">&times;</span>
+                                    </button>
+                                </div>
+
+                                <!--Body-->
+                                <div class="container w-100 mt-2">
+                                    <img class="w-100" src="{{ pizza.photo.url }}">
+                                </div>
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <p>{{ pizza.content }}</p>
+                                        <hr>
+                                        <p>{{ pizza.description }}</p>
+                                    </div>
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+
+                                </div>
+                            </div>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!-- Central Modal Medium Warning-->
+
+
+
+                    <div class="row box_Pizza-image"
+                         data-toggle="modal"
+                         data-target="#modal-{{ pizza.id }}">
+                        <img class="rounded mx-auto d-block" src="{{ pizza.photo.url }}"
+                             alt="Responsive image {{ post.name }}">
+                    </div>
+
+                    <div class="container align-middle">
+                        <h5 class="card-title">{{ pizza.name }}</h5>
+                    </div>
+
+                    <div class="container centering align-middle">
+                        <p class="card-text">{{ pizza.content }}</p>
+
+                    </div>
+                    {% if pizza.sizes.all|length > 1 %}
+
+                    <div class="size btn-group shadow-sm border-Usual_color row" role="group"
+                         aria-label="Basic example">
+                        {% for size in pizza.sizes.all %}
+                        <button type="button"
+                                class="btn btn-size {% if size.active %}active{% endif %}{% if size.price == 0 %}disabled{% endif %} {% if size.price > 0 %}notDisabled{% endif %}"
+                                data-size="{{ size.type }}"
+                                data-price="{{ size.price }}">
+                            {% if size.type == 'small' %}
+                            {% trans "Small" %}
+                            {% elif size.type == 'large' %}
+                            {% trans "Large" %}
+                            {% endif %}
+                        </button>
+                        {% endfor %}
+                    </div>
+
+                    {% endif %}
+
+                    <div class="pizza_calculator-item table container">
+                        <div class="calculator row" id="{{ pizza.id }}">
+                            <div class="col-6">
+
+                                <div class="row centering">
+                                    <div class="col-4 centering">
+                                        <button type="button" class="btn-minus btn btn-small shadow-sm">-</button>
+                                    </div>
+
+                                    <div class="pizzas_Count-display-size col-4 centering">
+                                        <span class="calculator-quantity font-weight-bold">1</span>
+                                    </div>
+
+                                    <div class="col-4 centering">
+                                        <button type="button" class="btn-plus btn btn-small shadow-sm">+</button>
+                                    </div>
+                                </div>
+
+                                <div class="row centering">
+                                    <div class="calculator-price">
+                                        {{ pizza.default_price }}
+                                    </div>
+                                    <span class="margin-left font-weight-bold">BYN</span>
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="add-cart btn">
+                                    Добавить в корзину
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock content %}
+
+
+{% block body_extra %}
+<script type="text/javascript" src="{% static 'shop/js/home.js'%}" defer='defer'></script>
+{% endblock body_extra %}
