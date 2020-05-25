@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 # from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
+from django.views.generic.base import TemplateView
 from django.views.i18n import JavaScriptCatalog
 from django.utils.translation import gettext_lazy as _
 
@@ -33,6 +34,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('', include('shop.urls', namespace='shop')),
+    path('well-known/apple-developer-merchantid-domain-association/',
+         TemplateView.as_view(template_name='shop/apple-developer-merchantid-domain-association')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
