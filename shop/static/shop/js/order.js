@@ -20,6 +20,16 @@ function validationAll() {
 }
 validationAll();
 
+function onPhoneInput(e) {
+    var numb = e.target.value.match(/\d/g);
+    var idx = numb.slice(0, 3).join("").indexOf('375')
+    if (idx >= 0) {
+        var toChange = numb.slice(3, numb.length).join('')
+        e.target.value = toChange
+    }
+}
+var phoneInput = document.getElementById("phone");
+phoneInput.addEventListener('input', onPhoneInput);
 
 function validateField(field, fieldId, count) {
     if (field.length < count) {
