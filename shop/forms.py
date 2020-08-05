@@ -29,11 +29,6 @@ class OrderForm(forms.ModelForm):
             'data-toggle': 'datetimepicker',
             'data-target': '#delivery_date',
             'placeholder': 'Выберите дату'}))
-    # delivery_time = forms.IntegerField(widget=IntegerField(attrs={
-    #         'id': 'delivery_time',
-    #         'onchange': 'validateTime()',
-    #         'class': 'form-control',
-    #         'placeholder': 'Выберите время'}))
     address = forms.CharField(widget=TextInput(attrs={
             'id': 'address',
             'type': 'text',

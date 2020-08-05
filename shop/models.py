@@ -1,5 +1,6 @@
 import logging
 
+from django import forms
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models import signals
@@ -41,7 +42,7 @@ class Order(models.Model):
         (1, _('Card')),
         (2, _('Online')),
     ]
-    phone = models.CharField(max_length=100, verbose_name=_('Phone'))
+    phone = models.CharField(max_length=10, verbose_name=_('Phone'))
     first_name = models.CharField(max_length=100, verbose_name=pgettext_lazy('Order|Name', 'Order'))
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))

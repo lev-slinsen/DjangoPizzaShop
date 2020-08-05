@@ -84,6 +84,9 @@ submitBtn.addEventListener('click', function(event){
     document.getElementById("order-submit").disabled = true;
     event.preventDefault();
     let order = localStorage.getItem('order');
+    let dateField = document.getElementById("delivery_date");
+    var newDate = moment(dateField.value).format("YYYY-MM-DD");
+    dateField.value = newDate;
     phoneNumberToDigits();
     let redirectLink = '';
     let form = new FormData(document.querySelector("#order-form"));
@@ -92,13 +95,8 @@ submitBtn.addEventListener('click', function(event){
 });
 
 function postData(url = '', data = {}) {
-//    var csrftoken = Cookies.get('csrftoken');
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-//    console.log(csrftoken);
-//    const headers = new Headers();
-//    console.log(headers);
-//    headers.append('X-CSRFToken', csrftoken);
-//    console.log(headers);
+    console.log(csrftoken);
     return fetch(url, {
         method: 'POST',
         redirect: 'manual',
@@ -112,19 +110,20 @@ function postData(url = '', data = {}) {
            document.getElementById("order-submit").disabled = false;
         })
         .then(function(data) {
-        let validPayment = document.querySelector('#payment').value;
-            if (validPayment === '2'){
-                if(data !== "error") {
+            let validPayment = document.querySelector('#payment').value;
+            if (data === "error") {
+                $('#ModalCenteredWarning').modal('show');
+                return error = true;
+            } else {
+                if (validPayment === '2'){
                     localStorage.clear();
                     return window.location.href=data;
                 } else {
-                    $('#ModalCenteredWarning').modal('show');
-                    return error = true;
+                    $('#ModalCenteredSucces').modal('show');
+                    localStorage.clear();
                 }
-            } else {
-                $('#ModalCenteredSucces').modal('show');
-                localStorage.clear();
             }
+
         })
 }
 $('#ModalCenteredSucces').on('hidden.bs.modal', function (e) {
