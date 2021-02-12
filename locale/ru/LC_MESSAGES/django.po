@@ -274,7 +274,7 @@ msgstr "Название текста"
 
 #: .\shop\templates\shop\base.html:40
 msgid "Page title"
-msgstr "Пекарня Печорин"
+msgstr "Пекарня Печорин, пироги (пирожки) в Минске с доставкой."
 
 #: .\shop\templates\shop\base.html:70 .\shop\templates\shop\home.html:61
 msgid "Cart"
