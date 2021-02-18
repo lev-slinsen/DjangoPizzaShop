@@ -1,27 +1,15 @@
 import logging
 
-from django import forms
+from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import signals
-from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
-from django.core.mail import EmailMultiAlternatives
-from django.contrib.sites.models import Site
 
 from accounts.models import User
 from catalog.models import Pizza, Size
 
 log = logging.getLogger(__name__)
-
-
-# def check_phone(sender, instance, **kwargs):
-#     user = User.objects.filter(phone=instance.phone).first()
-#     if user:
-#         instance.user = user
-#     else:
-#         instance.user = None
 
 
 class Order(models.Model):
