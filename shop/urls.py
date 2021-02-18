@@ -14,15 +14,9 @@ app_name = 'shop'
 
 urlpatterns = [
     path('', views.home, name='shop-home'),
-    # path('api', include(router.urls)),
     path('about/', views.about, name='shop-about'),
     path('cart/', views.cart, name='shop-cart'),
     path('order/', views.order, name='shop-order'),
-    # path('yandex_6f853d44aae6ef8f.html',
-    #      TemplateView.as_view(template_name='shop/yandex_6f853d44aae6ef8f.html'),
-    #      name='yandex'),
-    # path('register/', views.register, name='shop-register'),
-    # path('profile/', views.profile, name='shop-profile'),
-    # path('accounts/', include('django.contrib.auth.urls')),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("robots.txt", TemplateView.as_view(template_name="shop/robots.txt", content_type="text/plain")),
+    path('sitemap.xml', TemplateView.as_view(template_name="shop/sitemap.xml"))
 ]
