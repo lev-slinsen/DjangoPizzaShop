@@ -67,7 +67,7 @@ def order_update(sender, instance, created, **kwargs):
         try:
             subject = 'Новый заказ'
             from_email = 'Печорин'
-            to = 'pechorinby@gmail.com'
+            to = 'zakaz_pechorin@mail.ru'
             site = Site.objects.get()
             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
             html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
