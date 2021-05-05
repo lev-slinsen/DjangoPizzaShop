@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 from accounts.models import User
 from catalog.models import Pizza, Size
+import telebot
 
 log = logging.getLogger(__name__)
 
@@ -62,19 +63,44 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
 
+# Email
+# def order_update(sender, instance, created, **kwargs):
+#     if created:
+#         try:
+#             subject = 'Новый заказ'
+#             from_email = 'Печорин'
+#             to = 'zakaz_pechorin@mail.ru'
+#             site = Site.objects.get()
+#             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
+#             html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
+#             # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+#             # msg.attach_alternative(html_content, "text/html")
+#             # msg.send(fail_silently=False)
+#             send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
+#         except Exception as ex:
+#             log.error(ex)
+
+TOKEN = '1701058948:AAEYecFQCeXQeRiIWpTa0ZS43FWKwdWlaO0'
+ID_CHAT = '1413258846'
+bot = telebot.TeleBot(TOKEN, parse_mode='HTML')
+
+
+@bot.message_handler(commands=['start'])
+def Get_ID_CHAT(message):
+    bot.send_message(message.chat.id, f'ID CHAT = {message.chat_id}')
+
+
+# bot.polling()
+
+
 def order_update(sender, instance, created, **kwargs):
     if created:
         try:
             subject = 'Новый заказ'
-            from_email = 'Печорин'
-            to = 'zakaz_pechorin@mail.ru'
             site = Site.objects.get()
             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-            html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
-            # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            # msg.attach_alternative(html_content, "text/html")
-            # msg.send(fail_silently=False)
-            send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
+            HTML_Button = f'<a href="{site.domain}/admin/shop/order/{instance.id}/change" >Новый заказ</a>'
+            bot.send_message(ID_CHAT, subject + "\n" + text_content + "\n" + HTML_Button)
         except Exception as ex:
             log.error(ex)
 
@@ -93,6 +119,7 @@ class OrderItem(models.Model):
         return self.item.sizes.get(type=self.size).price * self.quantity
 
     "Property admin panel translation"
+
     def price_admin(self):
         return self.price
 
