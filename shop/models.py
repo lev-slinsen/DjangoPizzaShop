@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from accounts.models import User
 from catalog.models import Pizza, Size
 import telebot
+from .settingTelegramBot import *
 
 log = logging.getLogger(__name__)
 
@@ -80,17 +81,8 @@ class Order(models.Model):
 #         except Exception as ex:
 #             log.error(ex)
 
-TOKEN = '1701058948:AAEYecFQCeXQeRiIWpTa0ZS43FWKwdWlaO0'
 ID_CHAT = '1413258846'
-bot = telebot.TeleBot(TOKEN, parse_mode='HTML')
-
-
-@bot.message_handler(commands=['start'])
-def Get_ID_CHAT(message):
-    bot.send_message(message.chat.id, f'ID CHAT = {message.chat_id}')
-
-
-# bot.polling()
+bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
 
 
 def order_update(sender, instance, created, **kwargs):
@@ -100,7 +92,8 @@ def order_update(sender, instance, created, **kwargs):
             site = Site.objects.get()
             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
             HTML_Button = f'<a href="{site.domain}/admin/shop/order/{instance.id}/change" >Новый заказ</a>'
-            bot.send_message(ID_CHAT, subject + "\n" + text_content + "\n" + HTML_Button)
+            for admin in TelegramBot.objects.all():
+                bot.send_message(admin.idChat, subject + "\n" + text_content + "\n" + HTML_Button)
         except Exception as ex:
             log.error(ex)
 
@@ -156,3 +149,15 @@ class PageText(models.Model):
     class Meta:
         verbose_name = _('Page text')
         verbose_name_plural = _('Page texts')
+
+
+class TelegramBot(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Имя')
+    idChat = models.CharField(max_length=255, verbose_name='ID чата')
+
+    class Meta:
+        verbose_name = 'Модератор'
+        verbose_name_plural = 'Модераторы'
+
+    def __str__(self):
+        return self.name

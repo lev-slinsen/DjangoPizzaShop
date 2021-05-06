@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from . import views
 from accounts import views as acc_views
 from rest_framework import routers
-
+from .settingTelegramBot import *
 
 router = routers.DefaultRouter()
 router.register('users/', acc_views.UserViewSet)
@@ -18,5 +18,6 @@ urlpatterns = [
     path('cart/', views.cart, name='shop-cart'),
     path('order/', views.order, name='shop-order'),
     path("robots.txt", TemplateView.as_view(template_name="shop/robots.txt", content_type="text/plain")),
-    path('sitemap.xml', TemplateView.as_view(template_name="shop/sitemap.xml"))
+    path('sitemap.xml', TemplateView.as_view(template_name="shop/sitemap.xml")),
+    path(f'webhook/{TOKEN_BOT}', views.webhook)
 ]

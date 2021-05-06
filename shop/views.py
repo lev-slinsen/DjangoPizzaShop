@@ -11,6 +11,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .bepaid import Bepaid
 from .models import OrderItem
@@ -22,6 +23,10 @@ from catalog.models import Pizza
 from accounts.models import User
 from accounts.forms import UserCreationForm
 from timetable.models import Date
+
+import telebot
+from .settingTelegramBot import *
+import json
 
 
 def home(request):
@@ -119,7 +124,7 @@ def order(request):
                     )
                     OrderItem.objects.create(**params)
 
-                total_price = int(Order.objects.all().last().total_price()*100)
+                total_price = int(Order.objects.all().last().total_price() * 100)
                 bepaid = Bepaid()
                 response_data = bepaid.bp_token(total_price)
             return HttpResponse(response_data, content_type='application/json')
@@ -153,3 +158,27 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'shop/registration.html', {'form': form})
+
+
+bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
+
+
+@bot.message_handler(commands=['start'])
+def Get_ID_CHAT(message):
+    bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
+
+
+bot.remove_webhook()
+
+
+@csrf_exempt
+def webhook(request):
+    if request.method == 'POST':
+        jsonMessage = json.loads(request.body)
+        update = telebot.types.Update.de_json(jsonMessage)
+        bot.process_new_updates([update])
+        # TelegramBot.UpdateBot(request)
+    return HttpResponse()
+
+
+bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
