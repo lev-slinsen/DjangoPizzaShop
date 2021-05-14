@@ -14,6 +14,18 @@ from .settingTelegramBot import *
 log = logging.getLogger(__name__)
 
 
+class LegalOrder(models.Model):
+    unp = models.CharField(max_length=30, verbose_name="УНП")
+    name = models.CharField(max_length=30, verbose_name="Наименование")
+    legalAddress = models.CharField(max_length=50, verbose_name="Юридический адрес")
+    addressOrder = models.CharField(max_length=50, verbose_name="Адрес доставки")
+    contactPerson = models.CharField(max_length=50, verbose_name="Контактное лицо")
+    number = models.CharField(max_length=15, verbose_name="Номер")
+    note = models.TextField(max_length=2000,verbose_name="Примечание")
+    email = models.CharField(max_length=50, verbose_name="Email")
+    # price = models.ForeignKey(,verbose_name="Прайс")
+    payment = models.BooleanField(verbose_name="Формат оплаты")
+
 class Order(models.Model):
     DELIVERY_TIME_CHOICES = [
         (0, '09-10'),
