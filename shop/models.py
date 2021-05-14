@@ -48,6 +48,7 @@ class Order(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+    point = models.IntegerField(verbose_name="Баллы")
 
     def total_price(self):
         return sum([item.price for item in self.orderitem_set.all()])
@@ -161,3 +162,4 @@ class TelegramBot(models.Model):
 
     def __str__(self):
         return self.name
+

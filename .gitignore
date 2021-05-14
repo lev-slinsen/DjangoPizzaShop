@@ -6,3 +6,5 @@ db.sqlite3
 environment
 *.sock
 *__pycache__*
+.DS_Store
+git@github.com:ice-ivanov/
