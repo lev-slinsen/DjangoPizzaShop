@@ -81,7 +81,7 @@ class Order(models.Model):
 #         except Exception as ex:
 #             log.error(ex)
 
-ID_CHAT = '1413258846'
+
 bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
 
 
