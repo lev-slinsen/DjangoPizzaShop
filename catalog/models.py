@@ -24,7 +24,6 @@ class Price(models.Model):
     cost = models.FloatField(verbose_name="Цена")
 
 
-
 class Product(models.Model):
     vendorCode = models.CharField(max_length=10, verbose_name="Артикул")
     name = models.CharField(max_length=10, verbose_name="Название")

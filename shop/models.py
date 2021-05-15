@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
-from accounts.models import User
+from accounts.models import User, LegalUser
 from catalog.models import Pizza, Size
 import telebot
 from .settingTelegramBot import *
@@ -15,20 +15,35 @@ log = logging.getLogger(__name__)
 
 
 class LegalOrder(models.Model):
-    unp = models.CharField(max_length=30, verbose_name="УНП")
-    name = models.CharField(max_length=30, verbose_name="Наименование")
-    legalAddress = models.CharField(max_length=50, verbose_name="Юридический адрес")
-    addressOrder = models.CharField(max_length=50, verbose_name="Адрес доставки")
-    contactPerson = models.CharField(max_length=50, verbose_name="Контактное лицо")
-    number = models.CharField(max_length=15, verbose_name="Номер")
-    note = models.TextField(max_length=2000,verbose_name="Примечание")
-    email = models.CharField(max_length=50, verbose_name="Email")
-    # price = models.ForeignKey(,verbose_name="Прайс")
-    payment = models.BooleanField(verbose_name="Формат оплаты")
+    DELIVERY_TIME_CHOICES = [
+        (0, '09-10'),
+        (1, '10-11'),
+        (2, '11-12'),
+        (3, '12-13'),
+        (4, '13-14'),
+        (5, '14-15'),
+        (6, '15-16'),
+        (7, '16-17'),
+        (8, '17-18'),
+        (9, '18-18.30'),
+    ]
+    PAYMENT_CHOICES = [
+        (0, _('Cash')),
+        (1, _('Card')),
+        (2, _('Online')),
+    ]
+    legalClient = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, verbose_name="Клиент")
+    quantity = models.IntegerField(verbose_name="Количество")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    delivery_date = models.DateField(verbose_name=_('Delivery date'))
+    delivery_time = models.SmallIntegerField(
+        choices=DELIVERY_TIME_CHOICES,
+        verbose_name=_('Delivery time'),
+    )
 
     class Meta:
-        verbose_name = "Юридическое лицо"
-        verbose_name_plural = "Юридические лица"
+        verbose_name = "Юридический заказ"
+        verbose_name_plural = "Юридические заказы"
 
 
 class Order(models.Model):
@@ -65,7 +80,6 @@ class Order(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
-    point = models.IntegerField(verbose_name="Баллы", default=0)
 
     def total_price(self):
         return sum([item.price for item in self.orderitem_set.all()])

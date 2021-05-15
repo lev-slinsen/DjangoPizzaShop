@@ -69,10 +69,11 @@ class PageTextAdmin(admin.ModelAdmin):
 
 
 class LegalOrderAdmin(admin.ModelAdmin):
-    list_display = ('unp', 'name', 'number', 'email', 'addressOrder', 'legalAddress', 'note')
+    list_display = ('legalClient', 'quantity', 'created_at', 'delivery_date', 'delivery_time')
 
 
 admin.site.register(Order, OrdersAdmin)
+admin.site.register(LegalOrder, LegalOrderAdmin)
 admin.site.register(PageTextGroup, PageTextAdmin)
 admin.site.register(TelegramBot)
-admin.site.register(LegalOrder, LegalOrderAdmin)
+

@@ -57,7 +57,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False, blank=True, null=True)
     first_name = models.CharField(max_length=30, verbose_name=pgettext_lazy('User|Name', 'Name'))
     language = models.CharField(max_length=20, choices=settings.LANGUAGES, default='ru', verbose_name=_('Language'))
-
+    point = models.IntegerField(verbose_name="Баллы", default=0)
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['first_name']
 
@@ -91,3 +91,20 @@ def email(sender, instance, **kwargs):
             [instance.email],
             fail_silently=False,
         )
+
+
+class LegalUser(models.Model):
+    unp = models.CharField(max_length=30, verbose_name="УНП")
+    name = models.CharField(max_length=30, verbose_name="Наименование")
+    legalAddress = models.CharField(max_length=50, verbose_name="Юридический адрес")
+    addressOrder = models.CharField(max_length=50, verbose_name="Адрес доставки")
+    contactPerson = models.CharField(max_length=50, verbose_name="Контактное лицо")
+    number = models.CharField(max_length=15, verbose_name="Номер")
+    note = models.TextField(max_length=2000,verbose_name="Примечание")
+    email = models.CharField(max_length=50, verbose_name="Email")
+    # price = models.ForeignKey(,verbose_name="Прайс")
+    payment = models.BooleanField(verbose_name="Формат оплаты")
+
+    class Meta:
+        verbose_name = "Юридическое лицо"
+        verbose_name_plural = "Юридические лица"
