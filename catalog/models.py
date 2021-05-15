@@ -20,6 +20,11 @@ class Category(models.Model):
         verbose_name_plural = _('Categories')
 
 
+class Price(models.Model):
+    cost = models.FloatField(verbose_name="Цена")
+
+
+
 class Product(models.Model):
     vendorCode = models.CharField(max_length=10, verbose_name="Артикул")
     name = models.CharField(max_length=10, verbose_name="Название")
@@ -33,19 +38,19 @@ class Product(models.Model):
         verbose_name_plural = "Большие товары"
 
 
-class buffetProduct(Product):
+class BuffetProduct(Product):
     class Meta:
         verbose_name = "Большой товар"
         verbose_name_plural = "Большие товары"
 
 
-class bigProduct(Product):
+class BigProduct(Product):
     class Meta:
         verbose_name = "Фуршетный товар"
         verbose_name_plural = "Фуршетные товары"
 
 
-class setProduct(Product):
+class SetProduct(Product):
     class Meta:
         verbose_name = "Набор"
         verbose_name_plural = "Наборы товаров"

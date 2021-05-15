@@ -4,11 +4,10 @@ from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet
 from .models import PromoCodeGroup
 
-
 from django.db import models
 from django.forms import CheckboxSelectMultiple
 
-from .models import Category, Pizza, Size, bigProduct, buffetProduct, setProduct
+from .models import Category, Pizza, Size, BigProduct, BuffetProduct, SetProduct
 
 
 class SizeInlineFormSet(BaseInlineFormSet):
@@ -18,6 +17,7 @@ class SizeInlineFormSet(BaseInlineFormSet):
         print(actives)
         if len(list(filter(lambda x: x, actives))) != 1:
             raise ValidationError('Select 1 active size')
+
 
 # class SizeInlineFormSet(BaseInlineFormSet):
 #     def clean(self):
@@ -64,6 +64,6 @@ admin.site.register(Category)
 admin.site.register(Pizza, PizzaAdmin)
 # admin.site.register(PromoCodeGroups)
 admin.site.unregister(Group)
-admin.site.register(bigProduct, Product)
-admin.site.register(buffetProduct, Product)
-admin.site.register(setProduct, Product)
+admin.site.register(BigProduct, Product)
+admin.site.register(BuffetProduct, Product)
+admin.site.register(SetProduct, Product)
