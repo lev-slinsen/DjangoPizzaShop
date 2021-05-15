@@ -20,6 +20,37 @@ class Category(models.Model):
         verbose_name_plural = _('Categories')
 
 
+class Product(models.Model):
+    vendorCode = models.CharField(max_length=10, verbose_name="Артикул")
+    name = models.CharField(max_length=10, verbose_name="Название")
+    wight = models.FloatField(verbose_name="Вес")
+    description = models.TextField(max_length=2000, verbose_name="Описание")
+    image = models.ImageField(upload_to='images/', verbose_name="Фото")
+
+    class Meta:
+        abstract = True
+        verbose_name = "Большой товар"
+        verbose_name_plural = "Большие товары"
+
+
+class buffetProduct(Product):
+    class Meta:
+        verbose_name = "Большой товар"
+        verbose_name_plural = "Большие товары"
+
+
+class bigProduct(Product):
+    class Meta:
+        verbose_name = "Фуршетный товар"
+        verbose_name_plural = "Фуршетные товары"
+
+
+class setProduct(Product):
+    class Meta:
+        verbose_name = "Набор"
+        verbose_name_plural = "Наборы товаров"
+
+
 class Pizza(models.Model):
     """
     Pizza model.
