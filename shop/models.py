@@ -26,6 +26,11 @@ class LegalOrder(models.Model):
     # price = models.ForeignKey(,verbose_name="Прайс")
     payment = models.BooleanField(verbose_name="Формат оплаты")
 
+    class Meta:
+        verbose_name = "Юридическое лицо"
+        verbose_name_plural = "Юридические лица"
+
+
 class Order(models.Model):
     DELIVERY_TIME_CHOICES = [
         (0, '09-10'),
@@ -60,7 +65,7 @@ class Order(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
-    point = models.IntegerField(verbose_name="Баллы")
+    point = models.IntegerField(verbose_name="Баллы", default=0)
 
     def total_price(self):
         return sum([item.price for item in self.orderitem_set.all()])
