@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from accounts.models import User
 from catalog.models import Pizza, Size
 import telebot
+
 from .settingTelegramBot import *
 
 log = logging.getLogger(__name__)
