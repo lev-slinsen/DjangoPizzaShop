@@ -181,4 +181,4 @@ def webhook(request):
     return HttpResponse()
 
 
-# bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
