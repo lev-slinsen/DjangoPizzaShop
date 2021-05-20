@@ -1,10 +1,12 @@
 PYTHONUNBUFFERED=1
 DJANGO_SECRET_KEY=secretkey
+// db connection
 DJANGO_DEBUG=True
 DJANGO_DB=postgres://postgres:postgres@localhost:5432/test
 DJANGO_EMAIL_HOST='localhost'
 DJANGO_EMAIL_HOST_USER='postgres'
 DJANGO_EMAIL_HOST_PASSWORD='postgres'
-
+// bot token is given when creating a bot in @BotFather (telegram)
 TOKEN_BOT='1701058948:AAEYecFQCeXQeRiIWpTa0ZS43FWKwdWlaO0'
+// site domain with https
 FULL_URL='https://shop.com'
