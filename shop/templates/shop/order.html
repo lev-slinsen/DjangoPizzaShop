@@ -50,8 +50,16 @@
 
 
     <!-- Main order form -->
-    <div class="container">
-        <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
+    <ul class="container">
+        <ul style="list-style: none; display: flex;align-items: center;flex-direction: row;">
+            <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
+            <li class="nav-item">
+                <span class="nav-link" style="color: #552000;">Частные заказы</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="color: #ff5500;" href="/legal_order">Юридические заказы<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
         <hr>
         <form action="/order/" method="POST" id="order-form">
             {% csrf_token %}
