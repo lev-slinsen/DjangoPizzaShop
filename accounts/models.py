@@ -17,6 +17,7 @@ class UserManager(BaseUserManager):
     """
     Custom user manager.
     """
+
     def _create_user(self, phone, password, **extra_fields):
         """
         Create and save a user with the given phone and password.
@@ -57,6 +58,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False, blank=True, null=True)
     first_name = models.CharField(max_length=30, verbose_name=pgettext_lazy('User|Name', 'Name'))
     language = models.CharField(max_length=20, choices=settings.LANGUAGES, default='ru', verbose_name=_('Language'))
+    point = models.IntegerField(default=0, verbose_name=_('Point'))
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['first_name']
@@ -91,3 +93,27 @@ def email(sender, instance, **kwargs):
             [instance.email],
             fail_silently=False,
         )
+
+
+class LegalUser(models.Model):
+    unp = models.CharField(max_length=30, verbose_name=_("UNP"))
+    name = models.CharField(max_length=30, verbose_name=_("Name"))
+    legal_address = models.CharField(max_length=50, verbose_name=_("Legal address"))
+    address_order = models.CharField(max_length=50, verbose_name=_("Delivery address"))
+    contact_person = models.CharField(max_length=50, verbose_name=_("The contact person"))
+    number = models.CharField(max_length=15, verbose_name=_("Number"))
+    note = models.TextField(max_length=2000, verbose_name=_("Note"))
+    email = models.CharField(max_length=50, verbose_name=_("Email"))
+    payment = models.BooleanField(verbose_name=_("Payment format"))
+
+    class Meta:
+        verbose_name = _("Legal person")
+        verbose_name_plural = _("Legal persons")
+
+    @classmethod
+    def normalize_phone(cls, phone):
+        """
+        Remove extra spaces and non-digit chars from phone.
+        """
+        _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
+        return _normalize_phone('', phone)
