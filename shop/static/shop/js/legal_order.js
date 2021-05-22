@@ -4,11 +4,15 @@ $(document).ready(function(){
 
 function validationAll() {
     if (
-        document.getElementById("phone").classList.contains('is-valid')
+        document.getElementById("unp").classList.contains('is-valid')
+        && document.getElementById("phone").classList.contains('is-valid')
+        && document.getElementById("name_firm").classList.contains('is-valid')
         && document.getElementById("first_name").classList.contains('is-valid')
         && document.getElementById("delivery_date").classList.contains('is-valid')
         && document.getElementById("delivery_time").classList.contains('is-valid')
-        && document.getElementById("address").classList.contains('is-valid')
+        && document.getElementById("delivery_address").classList.contains('is-valid')
+        && document.getElementById("legal_address").classList.contains('is-valid')
+        && document.getElementById("email").classList.contains('is-valid')
         && document.getElementById("payment").classList.contains('is-valid')
     ) {
         document.getElementById("order-submit").disabled = false;
@@ -41,6 +45,16 @@ function validateField(field, fieldId, count) {
     }
 }
 
+function validateEmail() {
+    let emailMasked = document.getElementById("email").value;
+    validateField(emailMasked, "email", 5);
+}
+
+function validateUnp() {
+    let unpMasked = document.getElementById("unp").value;
+    validateField(unpMasked, "unp", 3);
+}
+
 function validatePhone() {
     let phoneMasked = document.getElementById("phone").value;
     var numb = phoneMasked.match(/\d/g);
@@ -63,13 +77,23 @@ function validatePaymentWay() {
 }
 
 function validateAddress() {
-    let address = document.getElementById("address").value;
-    validateField(address, "address", 5);
+    let address = document.getElementById("legal_address").value;
+    validateField(address, "legal_address", 5);
+}
+
+function validateDeliveryAddress() {
+    let address = document.getElementById("delivery_address").value;
+    validateField(address, "delivery_address", 5);
 }
 
 function validateName() {
     let nameField = document.getElementById("first_name").value;
     validateField(nameField, "first_name", 3);
+}
+
+function validateNameFirm() {
+    let NameFirmField = document.getElementById("name_firm").value;
+    validateField(NameFirmField, "name_firm", 3);
 }
 
 function phoneNumberToDigits() {

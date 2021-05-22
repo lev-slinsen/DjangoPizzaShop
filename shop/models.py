@@ -100,7 +100,6 @@ class Order(models.Model):
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
 
-
 # Email
 # def order_update(sender, instance, created, **kwargs):
 #     if created:
@@ -197,4 +196,4 @@ class TelegramBot(models.Model):
         verbose_name_plural = 'Модераторы'
 
     def __str__(self):
-        return self.nameй
+        return self.name
