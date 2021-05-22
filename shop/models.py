@@ -14,6 +14,43 @@ from .settingTelegramBot import *
 log = logging.getLogger(__name__)
 
 
+class LegalOrder(models.Model):
+    DELIVERY_TIME_CHOICES = [
+        (0, '09-10'),
+        (1, '10-11'),
+        (2, '11-12'),
+        (3, '12-13'),
+        (4, '13-14'),
+        (5, '14-15'),
+        (6, '15-16'),
+        (7, '16-17'),
+        (8, '17-18'),
+        (9, '18-18.30'),
+    ]
+    PAYMENT_CHOICES = [
+        (0, _('Cash')),
+        (1, _('Card')),
+        (2, _('Online')),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    delivery_date = models.DateField(verbose_name=_('Delivery date'))
+    delivery_time = models.SmallIntegerField(
+        choices=DELIVERY_TIME_CHOICES,
+        verbose_name=_('Delivery time'),
+    )
+    comment = models.TextField(max_length=100, verbose_name=_('Comment'), blank=True, null=True)
+    payment = models.SmallIntegerField(
+        choices=PAYMENT_CHOICES,
+        verbose_name=_('Payment method'),
+    )
+    status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+
+    class Meta:
+        verbose_name = _('Legal order')
+        verbose_name_plural = _('Legal orders')
+
+
 class Order(models.Model):
     DELIVERY_TIME_CHOICES = [
         (0, '09-10'),
@@ -160,4 +197,4 @@ class TelegramBot(models.Model):
         verbose_name_plural = 'Модераторы'
 
     def __str__(self):
-        return self.name
+        return self.nameй

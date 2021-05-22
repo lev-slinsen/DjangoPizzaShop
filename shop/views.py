@@ -146,6 +146,55 @@ def order(request):
     return render(request, 'shop/order.html', {'form': form, "dates": js_data})
 
 
+def legal_order(request):
+    form = OrderForm(data=request.POST)
+    if request.method == 'POST':
+        mutable_request_data = request.POST.copy()
+        order_items = json.loads(mutable_request_data.pop('order')[0])
+        order_details = OrderForm(mutable_request_data)
+
+        if order_details.is_valid():
+
+            with transaction.atomic():
+                if settings.DEBUG:
+                    print('order is valid')
+
+                order_obj = order_details.save()
+
+                # create object OrderItem item for each item in the order
+                for order_item in order_items:
+                    item = Pizza.objects.get(id=order_item['id'])
+                    params = dict(
+                        order=order_obj,
+                        item=item,
+                        size=order_item['size'],
+                        quantity=order_item['quantity'],
+                    )
+                    OrderItem.objects.create(**params)
+
+                total_price = int(Order.objects.all().last().total_price() * 100)
+                bepaid = Bepaid()
+                response_data = bepaid.bp_token(total_price)
+            return HttpResponse(response_data, content_type='application/json')
+
+        else:
+            if settings.DEBUG:
+                print('order is NOT valid')
+            return HttpResponse('error', content_type='application/json')
+
+    else:
+        form = OrderForm()
+
+    dates = Date.objects.all()
+    dates_list = []
+    for d in dates:
+        date = str(d).replace('-', '/')
+        dates_list.append(date)
+    js_data = json.dumps(dates_list)
+    return render(request, 'shop/order.html', {'form': form, "dates": js_data})
+
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -181,4 +230,4 @@ def webhook(request):
     return HttpResponse()
 
 
-bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+# bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
