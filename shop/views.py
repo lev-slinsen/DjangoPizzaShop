@@ -168,7 +168,7 @@ def Get_ID_CHAT(message):
     bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
 
 
-bot.remove_webhook()
+# bot.remove_webhook()
 
 
 @csrf_exempt
@@ -181,4 +181,4 @@ def webhook(request):
     return HttpResponse()
 
 
-bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+# bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')

@@ -96,6 +96,11 @@ def email(sender, instance, **kwargs):
 
 
 class LegalUser(models.Model):
+    PAYMENT_CHOICES = [
+        (0, _('Cash')),
+        (1, _('Card')),
+        (2, _('Online')),
+    ]
     unp = models.CharField(max_length=30, verbose_name=_("UNP"))
     name = models.CharField(max_length=30, verbose_name=_("Name"))
     legal_address = models.CharField(max_length=50, verbose_name=_("Legal address"))
@@ -104,7 +109,10 @@ class LegalUser(models.Model):
     number = models.CharField(max_length=15, verbose_name=_("Number"))
     note = models.TextField(max_length=2000, verbose_name=_("Note"))
     email = models.CharField(max_length=50, verbose_name=_("Email"))
-    payment = models.BooleanField(verbose_name=_("Payment format"))
+    payment = models.SmallIntegerField(
+        choices=PAYMENT_CHOICES,
+        verbose_name=_("Payment format"),
+    )
 
     class Meta:
         verbose_name = _("Legal person")
