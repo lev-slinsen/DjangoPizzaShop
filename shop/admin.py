@@ -36,10 +36,9 @@ class OrderItemInline(admin.TabularInline):
 
 class OrdersAdmin(admin.ModelAdmin):
     readonly_fields = ('total_price',)
-    list_display = ('phone', 'status', 'address', 'delivery_date', 'delivery_time',
+    list_display = ('phone', 'user', 'status', 'address', 'delivery_date', 'delivery_time',
                     'first_name', 'total_price', 'payment')
     date_hierarchy = 'delivery_date'
-    exclude = ('user',)
     inlines = (OrderItemInline,)
 
 

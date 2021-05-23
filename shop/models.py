@@ -6,9 +6,10 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
-from accounts.models import User
+from accounts.models import User, LegalUser
 from catalog.models import Pizza, Size
 import telebot
+
 from .settingTelegramBot import *
 
 log = logging.getLogger(__name__)
@@ -32,7 +33,7 @@ class LegalOrder(models.Model):
         (1, _('Card')),
         (2, _('Online')),
     ]
-
+    legal_user = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, verbose_name=_('legal user'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
     delivery_date = models.DateField(verbose_name=_('Delivery date'))
     delivery_time = models.SmallIntegerField(

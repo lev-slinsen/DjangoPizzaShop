@@ -147,8 +147,49 @@ def order(request):
 
 
 def legal_order(request):
-    form = LegalOrderForm()
-    return render(request, 'shop/legal_order.html', {'form': form})
+    form = LegalOrderForm(data=request.POST)
+    if request.method == 'POST':
+        mutable_request_data = request.POST.copy()
+        order_items = json.loads(mutable_request_data.pop('order')[0])
+        order_details = LegalOrderForm(mutable_request_data)
+        if order_details.is_valid():
+
+            with transaction.atomic():
+                if settings.DEBUG:
+                    print('order is valid')
+
+                order_obj = order_details.save()
+
+                # create object OrderItem item for each item in the order
+                for order_item in order_items:
+                    item = Pizza.objects.get(id=order_item['id'])
+                    params = dict(
+                        order=order_obj,
+                        item=item,
+                        size=order_item['size'],
+                        quantity=order_item['quantity'],
+                    )
+                    OrderItem.objects.create(**params)
+
+                total_price = int(Order.objects.all().last().total_price() * 100)
+                bepaid = Bepaid()
+                response_data = bepaid.bp_token(total_price)
+            return HttpResponse(response_data, content_type='application/json')
+
+        else:
+            if settings.DEBUG:
+                print('order is NOT valid')
+            return HttpResponse('error', content_type='application/json')
+    else:
+        form = LegalOrderForm()
+
+    dates = Date.objects.all()
+    dates_list = []
+    for d in dates:
+        date = str(d).replace('-', '/')
+        dates_list.append(date)
+    js_data = json.dumps(dates_list)
+    return render(request, 'shop/legal_order.html', {'form': form, "dates": js_data})
 
 
 def register(request):
@@ -173,7 +214,7 @@ def Get_ID_CHAT(message):
     bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
 
 
-bot.remove_webhook()
+# bot.remove_webhook()
 
 
 @csrf_exempt

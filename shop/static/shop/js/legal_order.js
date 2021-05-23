@@ -115,7 +115,7 @@ submitBtn.addEventListener('click', function(event){
     let redirectLink = '';
     let form = new FormData(document.querySelector("#order-form"));
     form.append("order", order);
-    postData("/order/", form);
+    postData("/legal_order/", form);
 });
 
 function postData(url = '', data = {}) {
