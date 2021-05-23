@@ -20,7 +20,7 @@ from .models import PageTextGroup
 from .forms import OrderForm, LegalOrderForm
 
 from catalog.models import Pizza
-from accounts.models import User
+from accounts.models import User, LegalUser
 from accounts.forms import UserCreationForm
 from timetable.models import Date
 

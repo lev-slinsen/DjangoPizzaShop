@@ -138,8 +138,7 @@ def order_update(sender, instance, created, **kwargs):
 post_save.connect(order_update, sender=Order)
 
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name=_('Order'))
+class OrderItemABS(models.Model):
     item = models.ForeignKey(Pizza, on_delete=models.DO_NOTHING, verbose_name=_('Item'))
     size = models.CharField(max_length=100, choices=Size.CHOICES, verbose_name=_('Size'))
     quantity = models.PositiveSmallIntegerField(verbose_name=_('Quantity'))
@@ -159,8 +158,17 @@ class OrderItem(models.Model):
         return f""
 
     class Meta:
+        abstract = True
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
+
+
+class OrderItem(OrderItemABS):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name=_('Order'))
+
+
+class LegalOrderItem(OrderItemABS):
+    order_legal = models.ForeignKey(LegalOrder, on_delete=models.CASCADE, verbose_name=_('Legal order'))
 
 
 class PageTextGroup(models.Model):
