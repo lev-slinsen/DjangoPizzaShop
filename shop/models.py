@@ -33,7 +33,7 @@ class LegalOrder(models.Model):
         (1, _('Card')),
         (2, _('Online')),
     ]
-    legal_user = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, verbose_name=_('legal user'))
+    # legal_user = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, verbose_name=_('legal user'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
     delivery_date = models.DateField(verbose_name=_('Delivery date'))
     delivery_time = models.SmallIntegerField(
@@ -46,6 +46,13 @@ class LegalOrder(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+
+    def total_price(self):
+        return sum([item.price for item in self.legalorderitem_set.all()])
+
+    total_price.allow_tags = True
+
+    total_price.short_description = _('Total price')
 
     class Meta:
         verbose_name = _('Legal order')
@@ -100,6 +107,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
+
 
 # Email
 # def order_update(sender, instance, created, **kwargs):

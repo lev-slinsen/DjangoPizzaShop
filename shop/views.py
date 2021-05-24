@@ -14,8 +14,8 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .bepaid import Bepaid
-from .models import OrderItem
-from .models import Order
+from .models import OrderItem, LegalOrderItem
+from .models import Order, LegalOrder
 from .models import PageTextGroup
 from .forms import OrderForm, LegalOrderForm
 
@@ -164,14 +164,14 @@ def legal_order(request):
                 for order_item in order_items:
                     item = Pizza.objects.get(id=order_item['id'])
                     params = dict(
-                        order=order_obj,
+                        order_legal=order_obj,
                         item=item,
                         size=order_item['size'],
                         quantity=order_item['quantity'],
                     )
-                    OrderItem.objects.create(**params)
+                    LegalOrderItem.objects.create(**params)
 
-                total_price = int(Order.objects.all().last().total_price() * 100)
+                total_price = int(LegalOrder.objects.all().last().total_price() * 100)
                 bepaid = Bepaid()
                 response_data = bepaid.bp_token(total_price)
             return HttpResponse(response_data, content_type='application/json')
