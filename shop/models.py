@@ -55,6 +55,11 @@ class LegalOrder(models.Model):
 
     total_price.short_description = _('Total price')
 
+    def __str__(self):
+        if self.legal_user is not None:
+            return self.legal_user.name
+        return "Error"
+
     class Meta:
         verbose_name = _('Legal order')
         verbose_name_plural = _('Legal orders')

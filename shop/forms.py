@@ -4,6 +4,13 @@ from django.forms import TextInput, DateInput
 from .models import Order, LegalOrder
 
 
+class LegalOrdersForm(forms.Form):
+    LegalOrders = forms.ModelChoiceField(
+        queryset=LegalOrder.objects.all(),
+        empty_label=None,
+    )
+
+
 class LegalOrderForm(forms.ModelForm):
     unp = forms.CharField(widget=TextInput(attrs={
             'id': 'unp',

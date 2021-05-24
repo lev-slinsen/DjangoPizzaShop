@@ -17,7 +17,7 @@ from .bepaid import Bepaid
 from .models import OrderItem, LegalOrderItem
 from .models import Order, LegalOrder
 from .models import PageTextGroup
-from .forms import OrderForm, LegalOrderForm
+from .forms import OrderForm, LegalOrderForm, LegalOrdersForm
 
 from catalog.models import Pizza
 from accounts.models import User, LegalUser
@@ -151,7 +151,7 @@ def order(request):
         date = str(d).replace('-', '/')
         dates_list.append(date)
     js_data = json.dumps(dates_list)
-    return render(request, 'shop/order.html', {'form': form, "dates": js_data})
+    return render(request, 'shop/order.html', {'form': form, "dates": js_data,})
 
 
 def legal_order(request):
@@ -160,6 +160,7 @@ def legal_order(request):
         mutable_request_data = request.POST.copy()
         order_items = json.loads(mutable_request_data.pop('order')[0])
         order_details = LegalOrderForm(mutable_request_data)
+        # companys = LegalOrdersForm(mutable_request_data)
         if order_details.is_valid():
 
             with transaction.atomic():
@@ -202,6 +203,7 @@ def legal_order(request):
             return HttpResponse('error', content_type='application/json')
     else:
         form = LegalOrderForm()
+        LegalOrders = LegalOrdersForm()
 
     dates = Date.objects.all()
     dates_list = []
@@ -209,7 +211,7 @@ def legal_order(request):
         date = str(d).replace('-', '/')
         dates_list.append(date)
     js_data = json.dumps(dates_list)
-    return render(request, 'shop/legal_order.html', {'form': form, "dates": js_data})
+    return render(request, 'shop/legal_order.html', {'form': form, "dates": js_data,  "legalUsers": LegalOrders})
 
 
 def register(request):
