@@ -165,8 +165,20 @@ def legal_order(request):
             with transaction.atomic():
                 if settings.DEBUG:
                     print('order is valid')
-
-                order_obj = order_details.save()
+                legal_user, created = LegalUser.objects.get_or_create(number=mutable_request_data['phone'], defaults={
+                    'unp': mutable_request_data['unp'],
+                    'name': mutable_request_data['name_firm'],
+                    'number': mutable_request_data['phone'],
+                    'legal_address': mutable_request_data['legal_address'],
+                    'address_order': mutable_request_data['delivery_address'],
+                    'contact_person': mutable_request_data['first_name'],
+                    'email': mutable_request_data['email'],
+                    'payment': mutable_request_data['payment'],
+                    'note': mutable_request_data['comment'],
+                })
+                order_obj = order_details.save(commit=False)
+                order_obj.legal_user = legal_user
+                order_obj.save()
 
                 # create object OrderItem item for each item in the order
                 for order_item in order_items:
