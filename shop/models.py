@@ -33,7 +33,8 @@ class LegalOrder(models.Model):
         (1, _('Card')),
         (2, _('Online')),
     ]
-    # legal_user = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, verbose_name=_('legal user'))
+    legal_user = models.ForeignKey(LegalUser, on_delete=models.DO_NOTHING, blank=True,
+                                   null=True, verbose_name=_('legal user'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
     delivery_date = models.DateField(verbose_name=_('Delivery date'))
     delivery_time = models.SmallIntegerField(

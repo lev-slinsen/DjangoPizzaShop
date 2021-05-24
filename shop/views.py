@@ -110,9 +110,17 @@ def order(request):
             with transaction.atomic():
                 if settings.DEBUG:
                     print('order is valid')
+                user, created = User.objects.get_or_create(
+                    phone=mutable_request_data['phone'],
+                    defaults={
+                        'phone': mutable_request_data['phone'],
+                        'first_name': mutable_request_data['first_name'],
+                    }
+                )
 
-                order_obj = order_details.save()
-
+                order_obj = order_details.save(commit=False)
+                order_obj.user = user
+                order_obj.save()
                 # create object OrderItem item for each item in the order
                 for order_item in order_items:
                     item = Pizza.objects.get(id=order_item['id'])
@@ -224,6 +232,5 @@ def webhook(request):
         update = telebot.types.Update.de_json(jsonMessage)
         bot.process_new_updates([update])
     return HttpResponse()
-
 
 # bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
