@@ -50,19 +50,35 @@
 
 
     <!-- Main order form -->
-    <ul class="container">
-        <ul style="list-style: none; display: flex;align-items: center;flex-direction: row;">
-            <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
-            <li class="nav-item">
-                <span class="nav-link" style="color: #552000;">Частные заказы</span>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" style="color: #ff5500;" href="/legal_order">Юридические заказы<span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
+    <div class="container">
+        <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
         <hr>
-        <form action="/order/" method="POST" id="order-form">
+        <form method="POST" id="order-form">
             {% csrf_token %}
+
+            <div class="col-md-4 mb-3">
+                    <label for="unp">УНП *</label>
+                {{ form.unp }}
+                <div class="invalid-feedback">
+                    Минимум 3 символа!
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="name_firm">Название *</label>
+                {{ form.name_firm }}
+                <div class="invalid-feedback">
+                    Номер должен содержать 9 цифр!
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="legal_address">Юридический адрес *</label>
+                {{ form.legal_address }}
+                <div class="invalid-feedback">
+                    Минимум 5 символов!
+                </div>
+            </div>
 
             <div class="col-md-4 mb-3">
                 <label for="phone">Номер телефона *</label>
@@ -71,13 +87,23 @@
                     Номер должен содержать 9 цифр!
                 </div>
             </div>
+
             <div class="col-md-4 mb-3">
-                <label for="first_name">Имя *</label>
-                {{ form.first_name }}
+                <label for="email">E-mail *</label>
+                {{ form.email }}
                 <div class="invalid-feedback">
-                    Минимум 3 символа
+                    Неверный e-mail!
                 </div>
             </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="contact_person">Контактное лицо *</label>
+                {{ form.first_name }}
+                <div class="invalid-feedback">
+                    Минимум 3 символа!
+                </div>
+            </div>
+
             <div class="col-md-4 mb-3">
                 <label for="delivery_date">Дата доставки заказа *</label>
                 <p class="small">Внимание! Заказы сегодня на сегодня принимаются до 12-30, и только по телефону!</p>
@@ -113,10 +139,10 @@
             </div>
 
             <div class="col-md-5 mb-3">
-                <label for="address">Адрес доставки *</label>
-                {{ form.address }}
+                <label for="delivery_address">Адрес доставки *</label>
+                {{ form.delivery_address }}
                 <div class="invalid-feedback">
-                    Введите полный адрес
+                    Введите полный адрес!
                 </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -154,5 +180,5 @@
 {% endblock content %}
 
 {% block body_extra %}
-<script type="text/javascript" src="{% static 'shop/js/order.js'%}"></script>
+<script type="text/javascript" src="{% static 'shop/js/legal_order.js'%}"></script>
 {% endblock body_extra %}
