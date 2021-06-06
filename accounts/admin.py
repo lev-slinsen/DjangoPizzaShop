@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.forms.models import BaseInlineFormSet
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import User
+from accounts.models import User, LegalUser
 from accounts.forms import UserAdminCreationForm, UserAdminChangeForm
 from shop.models import Order
 
@@ -49,7 +49,7 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
-    list_display = ('phone', 'first_name', 'is_active')
+    list_display = ('phone', 'first_name', 'is_active', 'point')
     list_filter = ('is_active', 'is_staff')
     search_fields = ('phone', 'name', 'email')
     readonly_fields = ('is_superuser', 'is_staff')
@@ -57,4 +57,13 @@ class UserAdmin(BaseUserAdmin):
     inlines = (OrderInline,)
 
 
+class LegalUserAdmin(admin.ModelAdmin):
+    list_display = ('unp', 'name', 'number', 'email',
+                    'payment', 'address_order',
+                    'legal_address', 'contact_person', 'note',
+                    )
+    search_fields = ('unp', 'name', 'number', 'email',)
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(LegalUser, LegalUserAdmin)
