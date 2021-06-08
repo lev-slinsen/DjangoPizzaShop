@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'shop.apps.ShopConfig',
     'accounts.apps.AccountsConfig',
-    'timetable.apps.TimetableConfig',
     'rest_framework',
     'django.contrib.sites',
     'absoluteuri',
