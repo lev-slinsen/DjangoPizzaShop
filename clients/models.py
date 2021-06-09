@@ -8,12 +8,12 @@ class Company(models.Model):
         (1, 'Card'),
         (2, 'Online'),
     ]
-    unp = models.CharField(max_length=30, verbose_name="UNP")
-    name = models.CharField(max_length=30, verbose_name="Name")
-    legal_address = models.CharField(max_length=50, verbose_name="Legal address")
-    address_order = models.CharField(max_length=50, verbose_name="Delivery address")
+    unp = models.CharField(max_length=255, verbose_name="UNP")
+    name = models.CharField(max_length=255, verbose_name="Name")
+    address_legal = models.CharField(max_length=255, verbose_name="Legal address")
+    address_order = models.CharField(max_length=255, verbose_name="Delivery address")
     contact_person = models.CharField(max_length=50, verbose_name="The contact person")
-    number = models.CharField(max_length=15, verbose_name="Number")
+    number = models.CharField(max_length=20, verbose_name="Number")
     note = models.TextField(max_length=2000, verbose_name="Note")
     email = models.CharField(max_length=50, verbose_name="Email")
     payment = models.SmallIntegerField(
