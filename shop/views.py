@@ -17,12 +17,11 @@ from .bepaid import Bepaid
 from .models import OrderItem
 from .models import Order
 from .models import PageTextGroup
-from .forms import OrderForm
+from .forms import OrderForm, LegalOrderForm
 
 from catalog.models import Pizza
 from accounts.models import User
 from accounts.forms import UserCreationForm
-from timetable.models import Date
 
 import telebot
 from .settingTelegramBot import *
@@ -146,6 +145,11 @@ def order(request):
     return render(request, 'shop/order.html', {'form': form, "dates": js_data})
 
 
+def legal_order(request):
+    form = LegalOrderForm()
+    return render(request, 'shop/legal_order.html', {'form': form})
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -168,7 +172,7 @@ def Get_ID_CHAT(message):
     bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
 
 
-bot.remove_webhook()
+# bot.remove_webhook()
 
 
 @csrf_exempt
@@ -177,8 +181,7 @@ def webhook(request):
         jsonMessage = json.loads(request.body)
         update = telebot.types.Update.de_json(jsonMessage)
         bot.process_new_updates([update])
-        # TelegramBot.UpdateBot(request)
     return HttpResponse()
 
 
-bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+# bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')

@@ -1,4 +1,3 @@
-from django.template.defaulttags import url
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 
@@ -17,6 +16,7 @@ urlpatterns = [
     path('about/', views.about, name='shop-about'),
     path('cart/', views.cart, name='shop-cart'),
     path('order/', views.order, name='shop-order'),
+    path('legal_order/', views.legal_order, name='shop-legal-order'),
     path("robots.txt", TemplateView.as_view(template_name="shop/robots.txt", content_type="text/plain")),
     path('sitemap.xml', TemplateView.as_view(template_name="shop/sitemap.xml")),
     path(f'webhook/{TOKEN_BOT}', views.webhook)

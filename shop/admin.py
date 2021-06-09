@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import BaseInlineFormSet
 from django.core.exceptions import ValidationError
 
-from .models import OrderItem, Order, PageText, PageTextGroup, TelegramBot
+from .models import OrderItem, Order, PageText, PageTextGroup, TelegramBot, LegalOrder
 
 
 class OrderItemInline(admin.TabularInline):
@@ -69,5 +69,6 @@ class PageTextAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order, OrdersAdmin)
+admin.site.register(LegalOrder)
 admin.site.register(PageTextGroup, PageTextAdmin)
 admin.site.register(TelegramBot)

@@ -9,9 +9,47 @@ from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from accounts.models import User
 from catalog.models import Pizza, Size
 import telebot
+
 from .settingTelegramBot import *
 
 log = logging.getLogger(__name__)
+
+
+class LegalOrder(models.Model):
+    DELIVERY_TIME_CHOICES = [
+        (0, '09-10'),
+        (1, '10-11'),
+        (2, '11-12'),
+        (3, '12-13'),
+        (4, '13-14'),
+        (5, '14-15'),
+        (6, '15-16'),
+        (7, '16-17'),
+        (8, '17-18'),
+        (9, '18-18.30'),
+    ]
+    PAYMENT_CHOICES = [
+        (0, _('Cash')),
+        (1, _('Card')),
+        (2, _('Online')),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    delivery_date = models.DateField(verbose_name=_('Delivery date'))
+    delivery_time = models.SmallIntegerField(
+        choices=DELIVERY_TIME_CHOICES,
+        verbose_name=_('Delivery time'),
+    )
+    comment = models.TextField(max_length=100, verbose_name=_('Comment'), blank=True, null=True)
+    payment = models.SmallIntegerField(
+        choices=PAYMENT_CHOICES,
+        verbose_name=_('Payment method'),
+    )
+    status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+
+    class Meta:
+        verbose_name = _('Legal order')
+        verbose_name_plural = _('Legal orders')
 
 
 class Order(models.Model):
@@ -63,23 +101,6 @@ class Order(models.Model):
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
 
-
-# Email
-# def order_update(sender, instance, created, **kwargs):
-#     if created:
-#         try:
-#             subject = 'Новый заказ'
-#             from_email = 'Печорин'
-#             to = 'zakaz_pechorin@mail.ru'
-#             site = Site.objects.get()
-#             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-#             html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
-#             # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-#             # msg.attach_alternative(html_content, "text/html")
-#             # msg.send(fail_silently=False)
-#             send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
-#         except Exception as ex:
-#             log.error(ex)
 
 ID_CHAT = '1413258846'
 bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')

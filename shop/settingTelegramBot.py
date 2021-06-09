@@ -1,2 +1,8 @@
-TOKEN_BOT = '1701058948:AAEYecFQCeXQeRiIWpTa0ZS43FWKwdWlaO0'
-FULL_URL = 'https://'
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TOKEN_BOT = os.environ.get('TOKEN_BOT')
+FULL_URL = os.environ.get('FULL_URL')
