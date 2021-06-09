@@ -21,6 +21,11 @@ class Company(models.Model):
         verbose_name="Payment format",
     )
 
+    @classmethod
+    def normalize_phone(cls, phone):
+        _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
+        return _normalize_phone('', phone)
+
 
 class Customer(models.Model):
     phone = models.CharField(max_length=100, unique=True, verbose_name='Phone')
@@ -28,4 +33,9 @@ class Customer(models.Model):
     points = models.IntegerField(default=0, verbose_name='Point')
 
     def __str__(self):
-        return self.name + self.name
+        return self.name
+
+    @classmethod
+    def normalize_phone(cls, phone):
+        _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
+        return _normalize_phone('', phone)
