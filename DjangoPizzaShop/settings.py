@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.sites',
     'absoluteuri',
+    'clients.apps.ClientsConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
