@@ -34,15 +34,6 @@ class OrderItemInline(admin.TabularInline):
         return super(OrderItemInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 
-class CustomAdmin(admin.ModelAdmin):
-    readonly_fields = ('total_price',)
-    list_display = ('phone', 'status', 'address', 'delivery_date', 'delivery_time',
-                    'first_name', 'total_price', 'payment')
-    date_hierarchy = 'delivery_date'
-    exclude = ('user',)
-    inlines = (OrderItemInline,)
-
-
 class PageTextFormset(BaseInlineFormSet):
     def clean(self):
         super(PageTextFormset, self).clean()
@@ -62,13 +53,22 @@ class PageTextInline(admin.TabularInline):
     min_num = 1
 
 
+@admin.register(PageTextGroup)
 class PageTextAdmin(admin.ModelAdmin):
     model = PageTextGroup
     list_display = ('title',)
     inlines = (PageTextInline,)
 
 
-admin.site.register(CustomerOrder, CustomAdmin)
+@admin.register(CustomerOrder)
+class CustomAdmin(admin.ModelAdmin):
+    readonly_fields = ('total_price',)
+    list_display = ('phone', 'status', 'address', 'delivery_date', 'delivery_time',
+                    'first_name', 'total_price', 'payment')
+    date_hierarchy = 'delivery_date'
+    exclude = ('user',)
+    inlines = (OrderItemInline,)
+
+
 admin.site.register(LegalOrder)
-admin.site.register(PageTextGroup, PageTextAdmin)
 admin.site.register(TelegramBot)
