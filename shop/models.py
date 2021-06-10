@@ -78,6 +78,11 @@ class CustomerOrder(Order):
         verbose_name=_('Payment method'),
     )
 
+    @receiver(pre_save, sender='shop.CustomerOrder')
+    def create_user(sender, instance, *args, **kwargs):
+        instance.customer = Customer.objects.update_or_create(phone=instance.phone,
+                                                              defaults={'name': instance.first_name})[0]
+
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')

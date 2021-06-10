@@ -36,11 +36,6 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
-    @receiver(pre_save, sender='module.Class')
-    def create_user(sender, instance, *args, **kwargs):
-        instance.customer = Customer.objects.update_or_create(phone=instance.phone,
-                                                              defaults={'name': instance.first_name})[0]
-
     @classmethod
     def normalize_phone(cls, phone):
         _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
