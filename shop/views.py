@@ -23,6 +23,7 @@ from catalog.models import Pizza
 from accounts.models import User
 from accounts.forms import UserCreationForm
 from clients.models import Customer
+from timetable.models import Date
 
 import telebot
 from .settingTelegramBot import *
