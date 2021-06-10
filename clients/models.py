@@ -13,7 +13,7 @@ class Company(models.Model):
     address_legal = models.CharField(max_length=255, verbose_name="Legal address")
     address_order = models.CharField(max_length=255, verbose_name="Delivery address")
     contact_person = models.CharField(max_length=50, verbose_name="The contact person")
-    phone = models.CharField(max_length=20, verbose_name="Number")
+    phone = models.CharField(max_length=25, unique=True, verbose_name="Number")
     note = models.TextField(max_length=2000, verbose_name="Note")
     email = models.CharField(max_length=50, verbose_name="Email")
     payment = models.SmallIntegerField(
@@ -30,7 +30,7 @@ class Company(models.Model):
 class Customer(models.Model):
     phone = models.CharField(max_length=100, unique=True, verbose_name='Phone')
     name = models.CharField(max_length=30, verbose_name='Name')
-    points = models.IntegerField(default=0, verbose_name='Point')
+    points = models.IntegerField(default=0, verbose_name='Points')
 
     def __str__(self):
         return self.name
@@ -39,3 +39,7 @@ class Customer(models.Model):
     def normalize_phone(cls, phone):
         _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
         return _normalize_phone('', phone)
+
+    @classmethod
+    def create_user(*args, **kwargs):
+        return Customer.objects.update_or_create(phone=kwargs['phone'], defaults={'name': kwargs['name']})[0]

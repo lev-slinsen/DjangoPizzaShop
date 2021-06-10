@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import BaseInlineFormSet
 from django.core.exceptions import ValidationError
 
-from .models import OrderItem, Order, PageText, PageTextGroup, TelegramBot, LegalOrder
+from .models import OrderItem, CustomerOrder, PageText, PageTextGroup, TelegramBot, LegalOrder
 
 
 class OrderItemInline(admin.TabularInline):
@@ -34,7 +34,7 @@ class OrderItemInline(admin.TabularInline):
         return super(OrderItemInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 
-class OrdersAdmin(admin.ModelAdmin):
+class CustomAdmin(admin.ModelAdmin):
     readonly_fields = ('total_price',)
     list_display = ('phone', 'status', 'address', 'delivery_date', 'delivery_time',
                     'first_name', 'total_price', 'payment')
@@ -68,7 +68,7 @@ class PageTextAdmin(admin.ModelAdmin):
     inlines = (PageTextInline,)
 
 
-admin.site.register(Order, OrdersAdmin)
+admin.site.register(CustomerOrder, CustomAdmin)
 admin.site.register(LegalOrder)
 admin.site.register(PageTextGroup, PageTextAdmin)
 admin.site.register(TelegramBot)

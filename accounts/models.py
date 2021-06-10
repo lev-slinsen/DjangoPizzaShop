@@ -93,35 +93,3 @@ def email(sender, instance, **kwargs):
             [instance.email],
             fail_silently=False,
         )
-
-
-class LegalUser(models.Model):
-    PAYMENT_CHOICES = [
-        (0, _('Cash')),
-        (1, _('Card')),
-        (2, _('Online')),
-    ]
-    unp = models.CharField(max_length=30, verbose_name=_("UNP"))
-    name = models.CharField(max_length=30, verbose_name=_("Name"))
-    legal_address = models.CharField(max_length=50, verbose_name=_("Legal address"))
-    address_order = models.CharField(max_length=50, verbose_name=_("Delivery address"))
-    contact_person = models.CharField(max_length=50, verbose_name=_("The contact person"))
-    number = models.CharField(max_length=15, verbose_name=_("Number"))
-    note = models.TextField(max_length=2000, verbose_name=_("Note"))
-    email = models.CharField(max_length=50, verbose_name=_("Email"))
-    payment = models.SmallIntegerField(
-        choices=PAYMENT_CHOICES,
-        verbose_name=_("Payment format"),
-    )
-
-    class Meta:
-        verbose_name = _("Legal person")
-        verbose_name_plural = _("Legal persons")
-
-    @classmethod
-    def normalize_phone(cls, phone):
-        """
-        Remove extra spaces and non-digit chars from phone.
-        """
-        _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
-        return _normalize_phone('', phone)
