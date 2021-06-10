@@ -83,12 +83,6 @@ class CustomerOrder(Order):
         verbose_name_plural = _('Orders')
 
 
-@receiver(pre_save, sender=CustomerOrder)
-def create_user(sender, instance, **kwargs):
-    instance.customer = Customer.objects.update_or_create(phone=instance.phone,
-                                                          defaults={'name': instance.first_name})[0]
-
-
 def order_update(sender, instance, created, **kwargs):
     if created:
         try:

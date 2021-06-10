@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.dispatch import receiver
 
 
 class Company(models.Model):
@@ -34,6 +35,11 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
+    @receiver(pre_save, sender='module.Class')
+    def create_user(sender, instance, *args, **kwargs):
+        instance.customer = Customer.objects.update_or_create(phone=instance.phone,
+                                                              defaults={'name': instance.first_name})[0]
 
     @classmethod
     def normalize_phone(cls, phone):
