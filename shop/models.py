@@ -71,7 +71,7 @@ class CustomerOrder(Order):
 
     phone = models.CharField(max_length=25, verbose_name='Phone')
     first_name = models.CharField(max_length=100, verbose_name=pgettext_lazy('Order|Name', 'Order'))
-    user = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
     address = models.CharField(max_length=100, verbose_name=_('Address'))
     payment = models.SmallIntegerField(
         choices=PAYMENT_CHOICES,
@@ -83,14 +83,10 @@ class CustomerOrder(Order):
         verbose_name_plural = _('Orders')
 
 
-
-# @receiver(pre_save, sender=CustomerOrder)
-# def create_user(sender, instance, **kwargs):
-#     client = Customer.objects.filter(phone=instance.phone).first()
-#     if client:
-#         print("Редактировать")
-#         return
-#     Customer.objects.create(phone=instance.phone, name=instance.first_name)
+@receiver(pre_save, sender=CustomerOrder)
+def create_user(sender, instance, **kwargs):
+    instance.customer = Customer.objects.update_or_create(phone=instance.phone,
+                                                          defaults={'name': instance.first_name})[0]
 
 
 def order_update(sender, instance, created, **kwargs):
