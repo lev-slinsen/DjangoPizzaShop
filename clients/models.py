@@ -30,7 +30,7 @@ class Company(models.Model):
 class Customer(models.Model):
     phone = models.CharField(max_length=100, unique=True, verbose_name='Phone')
     name = models.CharField(max_length=30, verbose_name='Name')
-    points = models.IntegerField(default=0, verbose_name='Points')
+    points = models.IntegerField(default=0, verbose_name='Point')
 
     def __str__(self):
         return self.name
@@ -39,7 +39,3 @@ class Customer(models.Model):
     def normalize_phone(cls, phone):
         _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub
         return _normalize_phone('', phone)
-
-    @classmethod
-    def create_user(*args, **kwargs):
-        return Customer.objects.update_or_create(phone=kwargs['phone'], defaults={'name': kwargs['name']})[0]
