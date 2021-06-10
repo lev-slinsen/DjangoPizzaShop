@@ -80,8 +80,15 @@ class CustomerOrder(Order):
 
     @receiver(pre_save, sender='shop.CustomerOrder')
     def create_user(sender, instance, *args, **kwargs):
-        instance.customer = Customer.objects.update_or_create(phone=instance.phone,
-                                                              defaults={'name': instance.first_name})[0]
+        customer = Customer.objects.filter(phone=instance.phone).first()
+        if customer:
+            if customer.name != instance.first_name:
+                customer.name = instance.first_name
+                customer.save()
+
+            instance.customer = customer
+            return
+        instance.customer = Customer.objects.create(phone=instance.phone, name=instance.first_name)
 
     class Meta:
         verbose_name = _('Order')
