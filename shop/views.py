@@ -111,8 +111,6 @@ def order(request):
                 if settings.DEBUG:
                     print('order is valid')
 
-                # user = Customer.create_user(phone=mutable_request_data['phone'], name=mutable_request_data['first_name'])
-                # order_details.instance.user = user
                 order_obj = order_details.save()
 
                 # create object OrderItem item for each item in the order
