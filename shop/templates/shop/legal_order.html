@@ -51,65 +51,50 @@
 
     <!-- Main order form -->
     <div class="container">
-        <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
+        <ul style="list-style: none; display: flex;align-items: center;flex-direction: row;">
+            <span class="font-weight-lighter text-black-50">Поля отмеченные * обязательны для заполнения</span>
+            <li class="nav-item">
+                    <a class="nav-link" style="color: #ff5500;" href="{% url 'shop:shop-order' %}">Частные заказы</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link" style="color: #552000;">Юридические заказы<span class="sr-only">(current)</span></span>
+            </li>
+        </ul>
         <hr>
         <form method="POST" id="order-form">
             {% csrf_token %}
-
             <div class="col-md-4 mb-3">
-                    <label for="unp">УНП *</label>
-                {{ form.unp }}
+                <label for="delivery_date">Дата доставки заказа *</label>
+                <p class="small">Внимание! Заказы сегодня на сегодня принимаются до 12-30, и только по телефону!</p>
+                {{ form.delivery_date }}
+                <script type="text/javascript">
+                    $(function () {
+                    var dates = {{ dates|safe }};
+                    var datesToMoments = dates.map(d => { return (moment(d))})
+                    var today = new Date();
+                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+                        $('#delivery_date').datetimepicker({
+                            format: 'L',
+        <!--                    daysOfWeekDisabled: [0, 6],-->
+                            format: 'YYYY-MM-DD',
+                            locale: 'ru',
+                            minDate: date,
+                            defaultDate: false,
+                            useCurrent: false,
+                            disabledDates: datesToMoments,
+                        });
+                    });
+                </script>
                 <div class="invalid-feedback">
-                    Минимум 3 символа!
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="name_firm">Название *</label>
-                {{ form.name_firm }}
-                <div class="invalid-feedback">
-                    Номер должен содержать 9 цифр!
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="legal_address">Юридический адрес *</label>
-                {{ form.legal_address }}
-                <div class="invalid-feedback">
-                    Минимум 5 символов!
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="phone">Номер телефона *</label>
-                {{ form.phone }}
-                <div class="invalid-feedback">
-                    Номер должен содержать 9 цифр!
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="email">E-mail *</label>
-                {{ form.email }}
-                <div class="invalid-feedback">
-                    Неверный e-mail!
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="contact_person">Контактное лицо *</label>
-                {{ form.first_name }}
-                <div class="invalid-feedback">
-                    Минимум 3 символа!
+                    Please provide a valid city.
                 </div>
             </div>
             <div class="col-md-5 mb-3">
                 <label for="comment">Комментарий</label>
                 {{ form.comment }}
             </div>
-
+                        {{ form.company }}
             <hr>
-
             <div class="d-flex justify-content-end">
                 <span class="justify-content-end text-danger" id="alert-message">
                 заполните все необходимые поля

@@ -20,6 +20,9 @@ class Company(models.Model):
         verbose_name="Payment format",
     )
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def normalize_phone(cls, phone):
         _normalize_phone = re.compile(r'(\s{2,}|[a-zA-Z]+)').sub

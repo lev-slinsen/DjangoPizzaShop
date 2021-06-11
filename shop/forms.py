@@ -2,36 +2,11 @@ from django import forms
 from django.forms import TextInput, DateInput
 
 from .models import CustomerOrder, LegalOrder
+from clients.models import Company
 
 
 class LegalOrderForm(forms.ModelForm):
-    unp = forms.CharField(widget=TextInput(attrs={
-            'id': 'unp',
-            'type': 'name',
-            'class': 'form-control',
-            'onchange': 'validateUnp()',
-            'placeholder': ' УНП'}))
-    phone = forms.CharField(widget=TextInput(attrs={
-            'id': 'phone',
-            'type': 'phone',
-            'class': 'form-control',
-            'onsubmit': 'return validationAll()',
-            'onchange': 'validatePhone()',
-            'placeholder': '(xx)xxx-xx-xx'}))
-    name_firm = forms.CharField(widget=TextInput(attrs={
-            'id': 'name_firm',
-            'type': 'name',
-            'class': 'form-control',
-            'oninput': 'validateNameFirm()',
-            'onsubmit': 'return validationAll()',
-            'placeholder': 'Контактное лицо'}))
-    first_name = forms.CharField(widget=TextInput(attrs={
-            'id': 'first_name',
-            'type': 'name',
-            'class': 'form-control',
-            'oninput': 'validateName()',
-            'onsubmit': 'return validationAll()',
-            'placeholder': 'Контактное лицо'}))
+    company = forms.ModelChoiceField(queryset=Company.objects.all())
     delivery_date = forms.DateField(widget=DateInput(attrs={
             'id': 'delivery_date',
             'type': 'text',
@@ -42,24 +17,6 @@ class LegalOrderForm(forms.ModelForm):
             'data-toggle': 'datetimepicker',
             'data-target': '#delivery_date',
             'placeholder': 'Выберите дату'}))
-    legal_address = forms.CharField(widget=TextInput(attrs={
-            'id': 'legal_address',
-            'type': 'text',
-            'class': 'form-control',
-            'oninput': 'validateAddress()',
-            'placeholder': 'Адрес'}))
-    delivery_address = forms.CharField(widget=TextInput(attrs={
-            'id': 'delivery_address',
-            'type': 'text',
-            'class': 'form-control',
-            'oninput': 'validateDeliveryAddress()',
-            'placeholder': 'Адрес'}))
-    email = forms.CharField(widget=TextInput(attrs={
-            'id': 'email',
-            'type': 'text',
-            'class': 'form-control',
-            'oninput': 'validateEmail()',
-            'placeholder': 'Адрес'}))
     comment = forms.CharField(widget=TextInput(attrs={
             'id': 'comment',
             'class': 'form-control',
@@ -69,9 +26,7 @@ class LegalOrderForm(forms.ModelForm):
 
     class Meta:
         model = LegalOrder
-        fields = ['unp', 'phone', 'name_firm', 'first_name',
-                  'delivery_date', 'legal_address', 'delivery_address',
-                  'email', 'comment', ]
+        fields = ['company', 'delivery_date', 'comment', ]
 
 
 class OrderForm(forms.ModelForm):

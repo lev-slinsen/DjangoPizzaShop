@@ -3,18 +3,7 @@ $(document).ready(function(){
 });
 
 function validationAll() {
-    if (
-        document.getElementById("unp").classList.contains('is-valid')
-        && document.getElementById("phone").classList.contains('is-valid')
-        && document.getElementById("name_firm").classList.contains('is-valid')
-        && document.getElementById("first_name").classList.contains('is-valid')
-        && document.getElementById("delivery_date").classList.contains('is-valid')
-        && document.getElementById("delivery_time").classList.contains('is-valid')
-        && document.getElementById("delivery_address").classList.contains('is-valid')
-        && document.getElementById("legal_address").classList.contains('is-valid')
-        && document.getElementById("email").classList.contains('is-valid')
-        && document.getElementById("payment").classList.contains('is-valid')
-    ) {
+    if (document.getElementById("delivery_date").classList.contains('is-valid')) {
         document.getElementById("order-submit").disabled = false;
         document.getElementById("alert-message").style.display = 'none';
     } else {
@@ -23,17 +12,6 @@ function validationAll() {
     }
 }
 validationAll();
-
-function onPhoneInput(e) {
-    var numb = e.target.value.match(/\d/g);
-    var idx = numb.slice(0, 3).join("").indexOf('375')
-    if (idx >= 0) {
-        var toChange = numb.slice(3, numb.length).join('')
-        e.target.value = toChange
-    }
-}
-var phoneInput = document.getElementById("phone");
-phoneInput.addEventListener('input', onPhoneInput);
 
 function validateField(field, fieldId, count) {
     if (field.length < count) {
@@ -45,62 +23,9 @@ function validateField(field, fieldId, count) {
     }
 }
 
-function validateEmail() {
-    let emailMasked = document.getElementById("email").value;
-    validateField(emailMasked, "email", 5);
-}
-
-function validateUnp() {
-    let unpMasked = document.getElementById("unp").value;
-    validateField(unpMasked, "unp", 3);
-}
-
-function validatePhone() {
-    let phoneMasked = document.getElementById("phone").value;
-    var numb = phoneMasked.match(/\d/g);
-    numb = numb.join("");
-    validateField(numb, "phone", 9);
-}
-
 function validateDate() {
     let dateField = document.getElementById("delivery_date").value;
         validateField(dateField, "delivery_date", 3);
-}
-
-function validateTime() {
-    validTime = document.querySelector('#delivery_time').value;
-    validateField(validTime, "delivery_time", 1);
-}
-function validatePaymentWay() {
-    validPayment = document.querySelector('#payment').value;
-    validateField(validPayment, "payment", 1);
-}
-
-function validateAddress() {
-    let address = document.getElementById("legal_address").value;
-    validateField(address, "legal_address", 5);
-}
-
-function validateDeliveryAddress() {
-    let address = document.getElementById("delivery_address").value;
-    validateField(address, "delivery_address", 5);
-}
-
-function validateName() {
-    let nameField = document.getElementById("first_name").value;
-    validateField(nameField, "first_name", 3);
-}
-
-function validateNameFirm() {
-    let NameFirmField = document.getElementById("name_firm").value;
-    validateField(NameFirmField, "name_firm", 3);
-}
-
-function phoneNumberToDigits() {
-    let phoneMasked = document.getElementById("phone").value;
-    var numb = phoneMasked.match(/\d/g);
-    numb = numb.join("");
-    document.getElementById('phone').value = numb;
 }
 
 let submitBtn = document.getElementById('order-submit');
@@ -111,11 +36,10 @@ submitBtn.addEventListener('click', function(event){
     let dateField = document.getElementById("delivery_date");
     var newDate = moment(dateField.value).format("YYYY-MM-DD");
     dateField.value = newDate;
-    phoneNumberToDigits();
     let redirectLink = '';
     let form = new FormData(document.querySelector("#order-form"));
-    form.append("order", order);
-    postData("/order/", form);
+    form.append("legal_order", order);
+    postData("/legal_order/", form);
 });
 
 function postData(url = '', data = {}) {
@@ -134,18 +58,12 @@ function postData(url = '', data = {}) {
            document.getElementById("order-submit").disabled = false;
         })
         .then(function(data) {
-            let validPayment = document.querySelector('#payment').value;
             if (data === "error") {
                 $('#ModalCenteredWarning').modal('show');
                 return error = true;
             } else {
-                if (validPayment === '2'){
-                    localStorage.clear();
-                    return window.location.href=data;
-                } else {
-                    $('#ModalCenteredSucces').modal('show');
-                    localStorage.clear();
-                }
+                $('#ModalCenteredSucces').modal('show');
+                localStorage.clear();
             }
 
         })

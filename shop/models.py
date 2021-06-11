@@ -17,25 +17,8 @@ log = logging.getLogger(__name__)
 
 
 class Order(models.Model):
-    DELIVERY_TIME_CHOICES = [
-        (0, '09-10'),
-        (1, '10-11'),
-        (2, '11-12'),
-        (3, '12-13'),
-        (4, '13-14'),
-        (5, '14-15'),
-        (6, '15-16'),
-        (7, '16-17'),
-        (8, '17-18'),
-        (9, '18-18.30'),
-    ]
-
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
     delivery_date = models.DateField(verbose_name='Delivery date')
-    delivery_time = models.SmallIntegerField(
-        choices=DELIVERY_TIME_CHOICES,
-        verbose_name='Delivery time',
-    )
     comment = models.TextField(max_length=100, verbose_name=_('Comment'), blank=True, null=True)
 
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
@@ -57,12 +40,28 @@ class Order(models.Model):
 class LegalOrder(Order):
     company = models.ForeignKey(Company, on_delete=models.DO_NOTHING)
 
+    @receiver(pre_save, sender='shop.LegalOrder')
+    def create_user(sender, instance, *args, **kwargs):
+        instance.customer = instance.company
+
     class Meta:
         verbose_name = _('Legal order')
         verbose_name_plural = _('Legal orders')
 
 
 class CustomerOrder(Order):
+    DELIVERY_TIME_CHOICES = [
+        (0, '09-10'),
+        (1, '10-11'),
+        (2, '11-12'),
+        (3, '12-13'),
+        (4, '13-14'),
+        (5, '14-15'),
+        (6, '15-16'),
+        (7, '16-17'),
+        (8, '17-18'),
+        (9, '18-18.30'),
+    ]
     PAYMENT_CHOICES = [
         (0, _('Cash')),
         (1, _('Card')),
@@ -76,6 +75,10 @@ class CustomerOrder(Order):
     payment = models.SmallIntegerField(
         choices=PAYMENT_CHOICES,
         verbose_name=_('Payment method'),
+    )
+    delivery_time = models.SmallIntegerField(
+        choices=DELIVERY_TIME_CHOICES,
+        verbose_name='Delivery time',
     )
 
     @receiver(pre_save, sender='shop.CustomerOrder')
@@ -111,6 +114,31 @@ def order_update(sender, instance, created, **kwargs):
 
 post_save.connect(order_update, sender=CustomerOrder)
 post_save.connect(order_update, sender=LegalOrder)
+
+
+class CompanyOrderItem(models.Model):
+    order = models.ForeignKey(LegalOrder, on_delete=models.CASCADE, verbose_name=_('Order'))
+    item = models.ForeignKey(Pizza, on_delete=models.DO_NOTHING, verbose_name=_('Item'))
+    size = models.CharField(max_length=100, choices=Size.CHOICES, verbose_name=_('Size'))
+    quantity = models.PositiveSmallIntegerField(verbose_name=_('Quantity'))
+
+    @property
+    def price(self):
+        return self.item.sizes.get(type=self.size).price * self.quantity
+
+    "Property admin panel translation"
+
+    def price_admin(self):
+        return self.price
+
+    price_admin.short_description = _('Price')
+
+    def __str__(self):
+        return f""
+
+    class Meta:
+        verbose_name = _("Item")
+        verbose_name_plural = _("Items")
 
 
 class OrderItem(models.Model):
