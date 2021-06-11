@@ -3,53 +3,17 @@ import logging
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
-from accounts.models import User
+from clients.models import Customer, Company
 from catalog.models import Pizza, Size
 import telebot
 
 from .settingTelegramBot import *
 
 log = logging.getLogger(__name__)
-
-
-class LegalOrder(models.Model):
-    DELIVERY_TIME_CHOICES = [
-        (0, '09-10'),
-        (1, '10-11'),
-        (2, '11-12'),
-        (3, '12-13'),
-        (4, '13-14'),
-        (5, '14-15'),
-        (6, '15-16'),
-        (7, '16-17'),
-        (8, '17-18'),
-        (9, '18-18.30'),
-    ]
-    PAYMENT_CHOICES = [
-        (0, _('Cash')),
-        (1, _('Card')),
-        (2, _('Online')),
-    ]
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
-    delivery_date = models.DateField(verbose_name=_('Delivery date'))
-    delivery_time = models.SmallIntegerField(
-        choices=DELIVERY_TIME_CHOICES,
-        verbose_name=_('Delivery time'),
-    )
-    comment = models.TextField(max_length=100, verbose_name=_('Comment'), blank=True, null=True)
-    payment = models.SmallIntegerField(
-        choices=PAYMENT_CHOICES,
-        verbose_name=_('Payment method'),
-    )
-    status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
-
-    class Meta:
-        verbose_name = _('Legal order')
-        verbose_name_plural = _('Legal orders')
 
 
 class Order(models.Model):
@@ -65,26 +29,15 @@ class Order(models.Model):
         (8, '17-18'),
         (9, '18-18.30'),
     ]
-    PAYMENT_CHOICES = [
-        (0, _('Cash')),
-        (1, _('Card')),
-        (2, _('Online')),
-    ]
-    phone = models.CharField(max_length=10, verbose_name=_('Phone'))
-    first_name = models.CharField(max_length=100, verbose_name=pgettext_lazy('Order|Name', 'Order'))
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
-    delivery_date = models.DateField(verbose_name=_('Delivery date'))
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
+    delivery_date = models.DateField(verbose_name='Delivery date')
     delivery_time = models.SmallIntegerField(
         choices=DELIVERY_TIME_CHOICES,
-        verbose_name=_('Delivery time'),
+        verbose_name='Delivery time',
     )
-    address = models.CharField(max_length=100, verbose_name=_('Address'))
     comment = models.TextField(max_length=100, verbose_name=_('Comment'), blank=True, null=True)
-    payment = models.SmallIntegerField(
-        choices=PAYMENT_CHOICES,
-        verbose_name=_('Payment method'),
-    )
+
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
 
     def total_price(self):
@@ -98,12 +51,48 @@ class Order(models.Model):
         return f"№ {self.id}"
 
     class Meta:
+        abstract = True
+
+
+class LegalOrder(Order):
+    company = models.ForeignKey(Company, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        verbose_name = _('Legal order')
+        verbose_name_plural = _('Legal orders')
+
+
+class CustomerOrder(Order):
+    PAYMENT_CHOICES = [
+        (0, _('Cash')),
+        (1, _('Card')),
+        (2, _('Online')),
+    ]
+
+    phone = models.CharField(max_length=25, verbose_name='Phone')
+    first_name = models.CharField(max_length=100, verbose_name=pgettext_lazy('Order|Name', 'Order'))
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    address = models.CharField(max_length=100, verbose_name=_('Address'))
+    payment = models.SmallIntegerField(
+        choices=PAYMENT_CHOICES,
+        verbose_name=_('Payment method'),
+    )
+
+    @receiver(pre_save, sender='shop.CustomerOrder')
+    def create_user(sender, instance, *args, **kwargs):
+        customer = Customer.objects.filter(phone=instance.phone).first()
+        if customer:
+            if customer.name != instance.first_name:
+                customer.name = instance.first_name
+                customer.save()
+
+            instance.customer = customer
+            return
+        instance.customer = Customer.objects.create(phone=instance.phone, name=instance.first_name)
+
+    class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
-
-
-ID_CHAT = '1413258846'
-bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
 
 
 def order_update(sender, instance, created, **kwargs):
@@ -114,16 +103,18 @@ def order_update(sender, instance, created, **kwargs):
             text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
             HTML_Button = f'<a href="{site.domain}/admin/shop/order/{instance.id}/change" >Новый заказ</a>'
             for admin in TelegramBot.objects.all():
+                bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
                 bot.send_message(admin.idChat, subject + "\n" + text_content + "\n" + HTML_Button)
         except Exception as ex:
             log.error(ex)
 
 
-post_save.connect(order_update, sender=Order)
+post_save.connect(order_update, sender=CustomerOrder)
+post_save.connect(order_update, sender=LegalOrder)
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name=_('Order'))
+    order = models.ForeignKey(CustomerOrder, on_delete=models.CASCADE, verbose_name=_('Order'))
     item = models.ForeignKey(Pizza, on_delete=models.DO_NOTHING, verbose_name=_('Item'))
     size = models.CharField(max_length=100, choices=Size.CHOICES, verbose_name=_('Size'))
     quantity = models.PositiveSmallIntegerField(verbose_name=_('Quantity'))
