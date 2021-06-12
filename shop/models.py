@@ -98,24 +98,6 @@ class CustomerOrder(Order):
         verbose_name_plural = _('Orders')
 
 
-def order_update(sender, instance, created, **kwargs):
-    if created:
-        try:
-            subject = 'Новый заказ'
-            site = Site.objects.get()
-            text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-            HTML_Button = f'<a href="{site.domain}/admin/shop/order/{instance.id}/change" >Новый заказ</a>'
-            for admin in TelegramBot.objects.all():
-                bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
-                bot.send_message(admin.idChat, subject + "\n" + text_content + "\n" + HTML_Button)
-        except Exception as ex:
-            log.error(ex)
-
-
-post_save.connect(order_update, sender=CustomerOrder)
-post_save.connect(order_update, sender=LegalOrder)
-
-
 class CompanyOrderItem(models.Model):
     order = models.ForeignKey(LegalOrder, on_delete=models.CASCADE, verbose_name=_('Order'))
     item = models.ForeignKey(Pizza, on_delete=models.DO_NOTHING, verbose_name=_('Item'))
@@ -198,6 +180,21 @@ class TelegramBot(models.Model):
     class Meta:
         verbose_name = 'Модератор'
         verbose_name_plural = 'Модераторы'
+
+    @receiver(post_save, sender='shop.LegalOrder')
+    @receiver(post_save, sender='shop.CustomerOrder')
+    def order_update(sender, instance, created, **kwargs):
+        if created:
+            try:
+                subject = 'Новый заказ'
+                site = Site.objects.get()
+                text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
+                HTML_Button = f'<a href="{site.domain}/admin/shop/order/{instance.id}/change" >Новый заказ</a>'
+                for admin in TelegramBot.objects.all():
+                    bot = telebot.TeleBot(TOKEN_BOT, parse_mode='HTML')
+                    bot.send_message(admin.idChat, subject + "\n" + text_content + "\n" + HTML_Button)
+            except Exception as ex:
+                log.error(ex)
 
     def __str__(self):
         return self.name
