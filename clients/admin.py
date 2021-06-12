@@ -44,7 +44,6 @@ class CustomerAdmin(admin.ModelAdmin):
     exclude = ()
     list_display = ('phone', 'name', 'points')
     search_fields = ('phone', 'name')
-
     inlines = (CustomOrderInline,)
 
 
