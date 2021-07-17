@@ -8,7 +8,7 @@ from shop.models import Order
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     exclude = ()
-    list_display = ('phone', 'first_name', 'point')
+    list_display = ('phone', 'name', 'points')
     search_fields = ('phone', 'name', 'email')
 
 

@@ -8,7 +8,7 @@ from .models import PromoCodeGroup
 from django.db import models
 from django.forms import CheckboxSelectMultiple
 
-from .models import Category, Pizza, Size
+from .models import Category, Pizza, Size, Price
 
 
 class SizeInlineFormSet(BaseInlineFormSet):
@@ -60,3 +60,4 @@ admin.site.register(Category)
 admin.site.register(Pizza, PizzaAdmin)
 # admin.site.register(PromoCodeGroups)
 admin.site.unregister(Group)
+admin.site.register(Price)

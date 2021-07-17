@@ -84,3 +84,8 @@ class PromoCodeGroup(models.Model):
 class PromoCode(models.Model):
     code = models.CharField(max_length=10, verbose_name=_('Code'))
     group = models.ForeignKey(PromoCodeGroup, on_delete=models.CASCADE, related_name='codes')
+
+
+class Price(models.Model):
+    price = models.DecimalField(default=0, max_digits=5, decimal_places=2, verbose_name=_('Price'))
+    product = models.ManyToManyField(Pizza)
