@@ -39,6 +39,7 @@ def home(request):
     context = {
         'pizzas': pizzas
     }
+
     return render(request, template_name, context)
 
 
@@ -211,8 +212,8 @@ def Get_ID_CHAT(message):
     bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
 
 
-if not settings.DEBUG:
-    bot.remove_webhook()
+# if not settings.DEBUG:
+bot.remove_webhook()
 
 
 @csrf_exempt
@@ -224,5 +225,5 @@ def webhook(request):
     return HttpResponse()
 
 
-if not settings.DEBUG:
-    bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+# if not settings.DEBUG:
+bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')

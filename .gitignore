@@ -7,4 +7,3 @@ environment
 *.sock
 *__pycache__*
 git@github.com:ice-ivanov/
-.env
