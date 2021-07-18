@@ -88,8 +88,11 @@ class PromoCode(models.Model):
 
 class Price(models.Model):
     name = models.CharField(max_length=15, verbose_name=_('Name'))
-    price = models.DecimalField(default=0, max_digits=5, decimal_places=2, verbose_name=_('Price'))
+    # price = models.DecimalField(default=0, max_digits=5, decimal_places=2, verbose_name=_('Price'))
     product = models.ManyToManyField(Pizza)
+
+    def price(self):
+        return sum(item.sizes.get().price for item in self.product.all())
 
     def __str__(self):
         return self.name

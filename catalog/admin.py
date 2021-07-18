@@ -40,6 +40,13 @@ class SizeInline(admin.TabularInline):
     max_num = 2
 
 
+@admin.register(Price)
+class PriceAdmin(admin.ModelAdmin):
+    readonly_fields = ('price',)
+    list_display = ('name', 'price')
+
+
+@admin.register(Pizza)
 class PizzaAdmin(admin.ModelAdmin):
     list_display = ('name',)
     fields = ('name', 'content', 'description', 'category', 'photo')
@@ -57,7 +64,5 @@ class PromoCodeBatchAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category)
-admin.site.register(Pizza, PizzaAdmin)
 # admin.site.register(PromoCodeGroups)
 admin.site.unregister(Group)
-admin.site.register(Price)
