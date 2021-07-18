@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import TextInput, DateInput
 
-from .models import Order, LegalOrder
+from .models import CustomerOrder, LegalOrder
 
 
 class LegalOrderForm(forms.ModelForm):
@@ -71,20 +71,7 @@ class LegalOrderForm(forms.ModelForm):
         model = LegalOrder
         fields = ['unp', 'phone', 'name_firm', 'first_name',
                   'delivery_date', 'legal_address', 'delivery_address',
-                  'email', 'comment', 'delivery_time', 'payment', ]
-
-    def __init__(self, *args, **kwargs):
-        super(LegalOrderForm, self).__init__(*args, **kwargs)
-        self.fields['delivery_time'].widget.attrs.update({
-                'id': 'delivery_time',
-                'onchange': 'validateTime()',
-                'class': 'form-control',
-                'placeholder': 'Выберите время'})
-        self.fields['payment'].widget.attrs.update({
-                'id': 'payment',
-                'onchange': 'validatePaymentWay()',
-                'class': 'form-control',
-                'placeholder': 'Выберите способ оплаты'})
+                  'email', 'comment', ]
 
 
 class OrderForm(forms.ModelForm):
@@ -126,7 +113,7 @@ class OrderForm(forms.ModelForm):
             'rows': '5'}), required=False)
 
     class Meta:
-        model = Order
+        model = CustomerOrder
         fields = ['phone', 'first_name', 'delivery_date', 'delivery_time', 'address', 'payment', 'comment']
 
     def __init__(self, *args, **kwargs):

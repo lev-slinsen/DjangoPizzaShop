@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'absoluteuri',
     'clients.apps.ClientsConfig',
+    'timetable.apps.TimetableConfig'
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

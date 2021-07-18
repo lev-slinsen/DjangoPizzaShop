@@ -15,13 +15,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .bepaid import Bepaid
 from .models import OrderItem
-from .models import Order
+from .models import CustomerOrder
 from .models import PageTextGroup
 from .forms import OrderForm, LegalOrderForm
 
 from catalog.models import Pizza
 from accounts.models import User
 from accounts.forms import UserCreationForm
+from clients.models import Customer
+from timetable.models import Date
 
 import telebot
 from .settingTelegramBot import *
@@ -105,7 +107,6 @@ def order(request):
         order_details = OrderForm(mutable_request_data)
 
         if order_details.is_valid():
-
             with transaction.atomic():
                 if settings.DEBUG:
                     print('order is valid')
@@ -123,7 +124,7 @@ def order(request):
                     )
                     OrderItem.objects.create(**params)
 
-                total_price = int(Order.objects.all().last().total_price() * 100)
+                total_price = int(CustomerOrder.objects.all().last().total_price() * 100)
                 bepaid = Bepaid()
                 response_data = bepaid.bp_token(total_price)
             return HttpResponse(response_data, content_type='application/json')
@@ -172,7 +173,8 @@ def Get_ID_CHAT(message):
     bot.send_message(message.chat.id, f'ID CHAT = {message.chat.id}')
 
 
-# bot.remove_webhook()
+if not settings.DEBUG:
+    bot.remove_webhook()
 
 
 @csrf_exempt
@@ -184,4 +186,5 @@ def webhook(request):
     return HttpResponse()
 
 
-# bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+if not settings.DEBUG:
+    bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
