@@ -1,6 +1,7 @@
 import re
 
 from django.db import models
+from catalog.models import Price
 
 
 class Company(models.Model):
@@ -21,6 +22,7 @@ class Company(models.Model):
         choices=PAYMENT_CHOICES,
         verbose_name="Payment format",
     )
+    price = models.ForeignKey(Price, on_delete=models.DO_NOTHING)
 
     @classmethod
     def normalize_phone(cls, phone):
