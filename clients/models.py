@@ -1,5 +1,6 @@
+import re
+
 from django.db import models
-from django.conf import settings
 
 
 class Company(models.Model):
@@ -13,7 +14,7 @@ class Company(models.Model):
     address_legal = models.CharField(max_length=255, verbose_name="Legal address")
     address_order = models.CharField(max_length=255, verbose_name="Delivery address")
     contact_person = models.CharField(max_length=50, verbose_name="The contact person")
-    phone = models.CharField(max_length=20, verbose_name="Number")
+    phone = models.CharField(max_length=25, unique=True, verbose_name="Number")
     note = models.TextField(max_length=2000, verbose_name="Note")
     email = models.CharField(max_length=50, verbose_name="Email")
     payment = models.SmallIntegerField(

@@ -103,55 +103,6 @@
                     Минимум 3 символа!
                 </div>
             </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="delivery_date">Дата доставки заказа *</label>
-                <p class="small">Внимание! Заказы сегодня на сегодня принимаются до 12-30, и только по телефону!</p>
-                {{ form.delivery_date }}
-                <script type="text/javascript">
-                    $(function () {
-                    var dates = {{ dates|safe }};
-                    var datesToMoments = dates.map(d => { return (moment(d))})
-                    var today = new Date();
-                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
-                        $('#delivery_date').datetimepicker({
-                            format: 'L',
-        <!--                    daysOfWeekDisabled: [0, 6],-->
-                            format: 'YYYY-MM-DD',
-                            locale: 'ru',
-                            minDate: date,
-                            defaultDate: false,
-                            useCurrent: false,
-                            disabledDates: datesToMoments,
-                        });
-                    });
-                </script>
-                <div class="invalid-feedback">
-                    Please provide a valid city.
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="delivery_time">Время доставки *</label>
-                {{ form.delivery_time }}
-                <div class="invalid-feedback">
-                    Выберите время доставки
-                </div>
-            </div>
-
-            <div class="col-md-5 mb-3">
-                <label for="delivery_address">Адрес доставки *</label>
-                {{ form.delivery_address }}
-                <div class="invalid-feedback">
-                    Введите полный адрес!
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="payment">Форма оплаты *</label>
-                {{ form.payment }}
-                <div class="invalid-feedback">
-                    Выберите форму оплаты
-                </div>
-            </div>
             <div class="col-md-5 mb-3">
                 <label for="comment">Комментарий</label>
                 {{ form.comment }}
