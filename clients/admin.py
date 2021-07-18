@@ -41,4 +41,4 @@ class CompanyAdmin(admin.ModelAdmin):
                     'payment', 'address_order',
                     'address_legal', 'contact_person', 'note',
                     )
-    search_fields = ('unp', 'name', 'number', 'email',)
+    search_fields = ('unp', 'name', 'phone', 'email',)

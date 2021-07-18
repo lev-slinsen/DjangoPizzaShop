@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
-
+from clients.models import Customer, Company
 from accounts.models import User
 from catalog.models import Pizza, Size, Price
 import telebot
@@ -78,7 +78,6 @@ class CustomerOrder(Order):
         choices=PAYMENT_CHOICES,
         verbose_name=_('Payment method'),
     )
-    status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
     price = models.ForeignKey(Price, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     @receiver(pre_save, sender='shop.CustomerOrder')
