@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 from accounts.models import User
-from catalog.models import Pizza, Size
+from catalog.models import Pizza, Size, Price
 import telebot
 
 from .settingTelegramBot import *
@@ -46,6 +46,7 @@ class LegalOrder(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+    price = models.ForeignKey(Price, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Legal order')
@@ -86,6 +87,7 @@ class Order(models.Model):
         verbose_name=_('Payment method'),
     )
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
+    price = models.ForeignKey(Price, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def total_price(self):
         return sum([item.price for item in self.orderitem_set.all()])
