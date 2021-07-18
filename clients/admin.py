@@ -29,7 +29,7 @@ class CustomOrderInline(OrderInline):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     exclude = ()
-    list_display = ('phone', 'name', 'points')
+    list_display = ('phone', 'name', 'points',)
     search_fields = ('phone', 'name')
     inlines = (CustomOrderInline,)
 
@@ -40,5 +40,6 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('unp', 'name', 'phone', 'email',
                     'payment', 'address_order',
                     'address_legal', 'contact_person', 'note',
+                    'price',
                     )
     search_fields = ('unp', 'name', 'phone', 'email',)
