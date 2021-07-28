@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .bepaid import Bepaid
 from .models import OrderItem, CompanyOrderItem
-from .models import CustomerOrder
+from .models import CustomerOrder, LegalOrder
 from .models import PageTextGroup
 from .forms import OrderForm, LegalOrderForm
 
@@ -93,7 +93,7 @@ def profile(request):
 
     user = User.objects.get(phone=request.user.phone)
     context = {
-        'orders': Order.objects.filter(phone=user.phone),
+        'orders': CustomerOrder.objects.filter(phone=user.phone),
         'form': form
     }
 
@@ -152,7 +152,7 @@ def legal_order(request):
         mutable_request_data = request.POST.copy()
         order_items = json.loads(mutable_request_data.pop('legal_order')[0])
         order_details = LegalOrderForm(mutable_request_data)
-        if order_details.is_valid():
+        if order_details.is_valid() and len(order_items) > 0:
             with transaction.atomic():
                 if settings.DEBUG:
                     print('order is valid')
@@ -170,7 +170,7 @@ def legal_order(request):
                 )
                 CompanyOrderItem.objects.create(**params)
 
-            total_price = int(CustomerOrder.objects.all().last().total_price() * 100)
+            total_price = int(LegalOrder.objects.all().last().total_price() * 100)
             bepaid = Bepaid()
             response_data = bepaid.bp_token(total_price)
             return HttpResponse(response_data, content_type='application/json')

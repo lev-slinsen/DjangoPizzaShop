@@ -23,13 +23,6 @@ class Order(models.Model):
 
     status = models.BooleanField(default=0, verbose_name=_('Payment confirmed'))
 
-    def total_price(self):
-        return sum([item.price for item in self.orderitem_set.all()])
-
-    total_price.allow_tags = True
-
-    total_price.short_description = _('Total price')
-
     def __str__(self):
         return f"№ {self.id}"
 
@@ -43,6 +36,13 @@ class LegalOrder(Order):
     @receiver(pre_save, sender='shop.LegalOrder')
     def create_user(sender, instance, *args, **kwargs):
         instance.customer = instance.company
+
+    def total_price(self):
+        return sum([item.price for item in self.companyorderitem_set.all()])
+
+    total_price.allow_tags = True
+
+    total_price.short_description = _('Total price')
 
     class Meta:
         verbose_name = _('Legal order')
@@ -80,6 +80,13 @@ class CustomerOrder(Order):
         choices=DELIVERY_TIME_CHOICES,
         verbose_name='Delivery time',
     )
+
+    def total_price(self):
+        return sum([item.price for item in self.orderitem_set.all()])
+
+    total_price.allow_tags = True
+
+    total_price.short_description = _('Total price')
 
     @receiver(pre_save, sender='shop.CustomerOrder')
     def create_user(sender, instance, *args, **kwargs):
