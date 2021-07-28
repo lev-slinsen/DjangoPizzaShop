@@ -225,5 +225,5 @@ def webhook(request):
     return HttpResponse()
 
 
-# if not settings.DEBUG:
-bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
+if not settings.DEBUG:
+    bot.set_webhook(url=f'{FULL_URL}/webhook/{TOKEN_BOT}')
