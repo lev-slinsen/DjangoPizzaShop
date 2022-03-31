@@ -42,8 +42,9 @@ class SizeInline(admin.TabularInline):
 
 class PizzaAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    fields = ('name', 'content', 'description', 'category', 'photo')
-    list_filter = ('category__name',)
+    fields = ('name', 'is_active', 'content', 'description', 'category', 'photo', 'created_at')
+    readonly_fields = ('created_at',)
+    list_filter = ('category__name', 'is_active')
 
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},

@@ -6,3 +6,4 @@ db.sqlite3
 environment
 *.sock
 *__pycache__*
+.env

@@ -89,6 +89,7 @@
     <!--Catalog-->
     <div class="row mb-4" id="catalog">
         {% for pizza in pizzas %}
+        {% if pizza.is_active %}
 
         <div class="mt-4 mr-4 filterDiv {{ pizza.categories_display }}">
 <!--            card-pizza-->
@@ -223,7 +224,7 @@
             </div>
         </div>
 
-
+        {% endif %}
         {% endfor %}
     </div>
 
