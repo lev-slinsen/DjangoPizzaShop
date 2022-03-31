@@ -29,6 +29,8 @@ class Pizza(models.Model):
     description = models.TextField(verbose_name=_('Description'))
     category = models.ManyToManyField(Category, verbose_name=_('Category'))
     photo = models.ImageField(upload_to='images/', verbose_name=_('Image'))
+    is_active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         verbose_name = _("Pizza")

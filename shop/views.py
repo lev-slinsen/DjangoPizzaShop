@@ -29,7 +29,7 @@ def home(request):
     Home page view.
     """
     template_name = 'shop/home.html'
-    pizzas = Pizza.objects.all()
+    pizzas = Pizza.objects.filter(is_active=True)
     context = {
         'pizzas': pizzas
     }
