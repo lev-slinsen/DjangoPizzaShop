@@ -1,15 +1,16 @@
-import logging
+import os
 
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
+from dotenv import load_dotenv
 
 from accounts.models import User
 from catalog.models import Pizza, Size
 
-log = logging.getLogger(__name__)
+load_dotenv()
 
 
 class Order(models.Model):
@@ -30,7 +31,7 @@ class Order(models.Model):
         (1, _('Card')),
         (2, _('Online')),
     ]
-    phone = models.CharField(max_length=10, verbose_name=_('Phone'))
+    phone = models.CharField(max_length=20, verbose_name=_('Phone'))
     first_name = models.CharField(max_length=100, verbose_name=pgettext_lazy('Order|Name', 'Order'))
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
@@ -49,9 +50,7 @@ class Order(models.Model):
 
     def total_price(self):
         return sum([item.price for item in self.orderitem_set.all()])
-
     total_price.allow_tags = True
-
     total_price.short_description = _('Total price')
 
     def __str__(self):
@@ -62,24 +61,30 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
 
-def order_update(sender, instance, created, **kwargs):
-    if created:
+def email_notification(sender, instance, created, **kwargs):
+    email = os.environ.get('NOTIFICATIONS_EMAIL', None)
+    if email and created:
         try:
-            subject = 'Новый заказ'
-            from_email = 'Печорин'
-            to = 'zakaz_pechorin@mail.ru'
             site = Site.objects.get()
-            text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-            html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
-            # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            # msg.attach_alternative(html_content, "text/html")
-            # msg.send(fail_silently=False)
+            from_email = 'Автоматическое уведомление'
+            to = email
+
+            if sender == Order:
+                subject = 'Новый заказ'
+                text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
+                html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
+            elif sender == Feedback:
+                subject = 'Обратный звонок'
+                text_content = f'{instance.phone} запросил обратный звонок'
+                html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
+
             send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
+
         except Exception as ex:
-            log.error(ex)
+            print(ex)
 
 
-post_save.connect(order_update, sender=Order)
+post_save.connect(email_notification, sender=Order)
 
 
 class OrderItem(models.Model):
@@ -129,3 +134,14 @@ class PageText(models.Model):
     class Meta:
         verbose_name = _('Page text')
         verbose_name_plural = _('Page texts')
+
+
+class Feedback(models.Model):
+    phone = models.CharField(max_length=20, verbose_name=_('Phone'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    def __str__(self):
+        return self.phone
+
+
+post_save.connect(email_notification, sender=Feedback)

@@ -16,7 +16,7 @@ from .bepaid import Bepaid
 from .models import OrderItem
 from .models import Order
 from .models import PageTextGroup
-from .forms import OrderForm
+from .forms import OrderForm, LunchForm
 
 from catalog.models import Pizza
 from accounts.models import User
@@ -51,6 +51,38 @@ def about(request):
     return render(request, template_name, context)
 
 
+def lunch(request):
+    template_name = 'shop/lunch.html'
+    form = LunchForm(request.POST)
+    path = request.path.strip('/')
+
+    if request.method == 'GET':
+        text_group = PageTextGroup.objects.filter(page_name=path).first()
+        context = {'form': form}
+        if text_group is None:
+            context.update({'text': text_group})
+        else:
+            variables = [(text.text_name, text.text) for text in text_group.texts.all()]
+            context.update({'text': text_group, **dict(variables)})
+        # print(request, template_name, context)
+        return render(request, template_name, context)
+
+    elif request.method == 'POST':
+        form = LunchForm(request.POST)
+
+        if form.is_valid():
+            # print(form.cleaned_data)
+            form.save()
+
+            return redirect('shop:shop-home')
+        else:
+            breakpoint()
+            if settings.DEBUG:
+                print(form.data)
+                print('feedback is NOT valid')
+            return HttpResponse(form.errors, content_type='application/json')
+
+
 def cart(request):
     """
     Cart page view.
@@ -60,36 +92,6 @@ def cart(request):
     context = {
         'pizzas': pizzas
     }
-    return render(request, template_name, context)
-
-
-def profile(request):
-    """
-    User profile page view.
-    """
-    template_name = 'shop/profile.html'
-
-    if not request.user.is_authenticated:
-        return redirect(reverse('login'))
-
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('shop:shop-home')
-        else:
-            messages.error(request, f'Please correct errors {form.errors}.')
-    else:
-        form = PasswordChangeForm(request.user)
-
-    user = User.objects.get(phone=request.user.phone)
-    context = {
-        'orders': Order.objects.filter(phone=user.phone),
-        'form': form
-    }
-
     return render(request, template_name, context)
 
 
@@ -153,3 +155,33 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'shop/registration.html', {'form': form})
+
+
+def profile(request):
+    """
+    User profile page view.
+    """
+    template_name = 'shop/profile.html'
+
+    if not request.user.is_authenticated:
+        return redirect(reverse('login'))
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('shop:shop-home')
+        else:
+            messages.error(request, f'Please correct errors {form.errors}.')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    user = User.objects.get(phone=request.user.phone)
+    context = {
+        'orders': Order.objects.filter(phone=user.phone),
+        'form': form
+    }
+
+    return render(request, template_name, context)

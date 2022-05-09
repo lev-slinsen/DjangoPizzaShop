@@ -17,6 +17,7 @@ urlpatterns = [
     path('about/', views.about, name='shop-about'),
     path('cart/', views.cart, name='shop-cart'),
     path('order/', views.order, name='shop-order'),
+    path('lunch/', views.lunch, name='shop-lunch'),
     path("robots.txt", TemplateView.as_view(template_name="shop/robots.txt", content_type="text/plain")),
     path('sitemap.xml', TemplateView.as_view(template_name="shop/sitemap.xml"))
 ]

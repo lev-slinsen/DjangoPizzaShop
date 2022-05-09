@@ -790,6 +790,12 @@ body * {
 
 }
 
+@media only screen and (max-width: 1000px) {
+    .lunch-row {
+        flex-direction: column-reverse;
+    }
+}
+
 .box-image {
     align-items: center;
     align-content: center;
@@ -840,4 +846,11 @@ h1 {
 h2 {
     font-size: 1.8rem;
     text-align: center;
+}
+
+.img-fit {
+    max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    margin: auto;
 }

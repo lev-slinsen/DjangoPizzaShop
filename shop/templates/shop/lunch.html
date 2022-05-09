@@ -1,0 +1,47 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="container row lunch-row" style="margin-top: 7rem;">
+        <article class="col-lg-7 flex align-self-center">
+            <a class="h3">{{ lunch1 }}</a>
+            <br><br>
+            <a>{{ lunch2 }}</a>
+            <br><br>
+            <form action="/lunch/" method="POST" id="lunch-form">
+                {% csrf_token %}
+
+                <div class="col-md-4 mb-3">
+                    <label for="phone">Номер телефона:</label>
+                    {{ form.phone }}
+                    <div class="invalid-feedback">
+                        Номер должен содержать 9 цифр!
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <span class="justify-content-end text-danger" id="alert-message">
+                    заполните все необходимые поля
+                </span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button id="lunch-submit" class="btn" type="submit">
+                        Заказать
+                    </button>
+                </div>
+            </form>
+        </article>
+        <div class="container flex col-lg-5">
+            <div class="flex justify-content-center" style="margin-bottom: 3rem;">
+                <img class="img-fit" src="/media/hardcode/lunch/lunch1.jpg">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block body_extra %}
+<script type="text/javascript" src="{% static 'shop/js/order.js'%}"></script>
+{% endblock body_extra %}

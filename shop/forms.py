@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import TextInput, DateInput
 
-from .models import Order
+from .models import Order, Feedback
 
 
 class OrderForm(forms.ModelForm):
@@ -58,3 +58,17 @@ class OrderForm(forms.ModelForm):
                 'onchange': 'validatePaymentWay()',
                 'class': 'form-control',
                 'placeholder': 'Выберите способ оплаты'})
+
+
+class LunchForm(forms.ModelForm):
+    phone = forms.CharField(widget=TextInput(attrs={
+        'id': 'phone',
+        'type': 'phone',
+        'class': 'form-control',
+        'onsubmit': 'return validationAll()',
+        'onchange': 'validatePhone()',
+        'placeholder': '(xx)xxx-xx-xx'}))
+
+    class Meta:
+        model = Feedback
+        fields = ['phone']
