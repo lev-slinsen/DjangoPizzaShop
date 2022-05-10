@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -55,10 +55,11 @@ def lunch(request):
     template_name = 'shop/lunch.html'
     form = LunchForm(request.POST)
     path = request.path.strip('/')
+    context = {'form': form}
 
     if request.method == 'GET':
         text_group = PageTextGroup.objects.filter(page_name=path).first()
-        context = {'form': form}
+        # context = {'form': form}
         if text_group is None:
             context.update({'text': text_group})
         else:
@@ -68,15 +69,11 @@ def lunch(request):
         return render(request, template_name, context)
 
     elif request.method == 'POST':
-        form = LunchForm(request.POST)
-
         if form.is_valid():
-            # print(form.cleaned_data)
             form.save()
-
-            return redirect('shop:shop-home')
+            messages.success(request, 'Спасибо за обращение! Мы свяжемся с Вами в ближайшее время.')
+            return HttpResponseRedirect(request.path_info)
         else:
-            breakpoint()
             if settings.DEBUG:
                 print(form.data)
                 print('feedback is NOT valid')

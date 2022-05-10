@@ -30,6 +30,13 @@
                         Заказать
                     </button>
                 </div>
+                {% if messages %}
+                    <div class="messages message-success">
+                        {% for message in messages %}
+                        <a  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </form>
         </article>
 
