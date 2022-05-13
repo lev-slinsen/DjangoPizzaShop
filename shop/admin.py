@@ -79,7 +79,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    fields = ('created_at', 'name', 'file')
-    readonly_fields = ('created_at',)
-    list_display = ('created_at', 'name')
-    ordering = ('-created_at',)
+    fields = ('updated_at', 'name', 'file')
+    readonly_fields = ('updated_at',)
+    list_display = ('name', 'updated_at')
+    ordering = ('-updated_at',)
