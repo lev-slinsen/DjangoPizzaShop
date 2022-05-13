@@ -13,9 +13,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .bepaid import Bepaid
-from .models import OrderItem
-from .models import Order
-from .models import PageTextGroup
+from .models import OrderItem, Order, PageTextGroup, File
 from .forms import OrderForm, LunchForm
 
 from catalog.models import Pizza
@@ -59,13 +57,13 @@ def lunch(request):
 
     if request.method == 'GET':
         text_group = PageTextGroup.objects.filter(page_name=path).first()
-        # context = {'form': form}
+        menu_link = File.objects.filter(name='lunch-menu').first().url() or None
         if text_group is None:
             context.update({'text': text_group})
         else:
             variables = [(text.text_name, text.text) for text in text_group.texts.all()]
             context.update({'text': text_group, **dict(variables)})
-        # print(request, template_name, context)
+            context.update({'menu_file': menu_link})
         return render(request, template_name, context)
 
     elif request.method == 'POST':

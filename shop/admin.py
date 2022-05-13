@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import BaseInlineFormSet
 from django.core.exceptions import ValidationError
 
-from .models import OrderItem, Order, PageText, PageTextGroup, Feedback
+from .models import OrderItem, Order, PageText, PageTextGroup, Feedback, File
 
 
 class OrderItemInline(admin.TabularInline):
@@ -34,6 +34,7 @@ class OrderItemInline(admin.TabularInline):
         return super(OrderItemInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 
+@admin.register(Order)
 class OrdersAdmin(admin.ModelAdmin):
     readonly_fields = ('total_price',)
     list_display = ('phone', 'status', 'address', 'delivery_date', 'delivery_time',
@@ -62,20 +63,23 @@ class PageTextInline(admin.TabularInline):
     min_num = 1
 
 
+@admin.register(PageTextGroup)
 class PageTextAdmin(admin.ModelAdmin):
-    model = PageTextGroup
     list_display = ('title',)
     inlines = (PageTextInline,)
 
 
+@admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    model = Feedback
     fields = ('created_at', 'phone')
     readonly_fields = fields
     list_display = ('created_at', 'phone')
     ordering = ('-created_at',)
 
 
-admin.site.register(Order, OrdersAdmin)
-admin.site.register(PageTextGroup, PageTextAdmin)
-admin.site.register(Feedback, FeedbackAdmin)
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    fields = ('created_at', 'name', 'file')
+    readonly_fields = ('created_at',)
+    list_display = ('created_at', 'name')
+    ordering = ('-created_at',)

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.sites',
     'absoluteuri',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
