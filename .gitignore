@@ -3,6 +3,7 @@ venv*
 /static
 db.sqlite3
 /media/images/
+/media/files/
 environment
 *.sock
 *__pycache__*
