@@ -90,10 +90,16 @@ def send_email_notification(sender, instance, created, **kwargs):
         site = Site.objects.get()
         if sender == Order:
             subject = 'Новый заказ'
-            html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
+            html_content = f'''
+                Новый заказ
+                {site.domain}/admin/shop/order/{instance.id}/change
+                '''
         elif sender == Feedback:
             subject = 'Обратный звонок'
-            html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
+            html_content = f'''
+                Запрос на обратный звонок на телефон {instance.phone}
+                {site.domain}/admin/shop/feedback/{instance.id}/change
+                '''
         else:
             return
 
