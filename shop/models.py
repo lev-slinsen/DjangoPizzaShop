@@ -97,13 +97,13 @@ def send_email_notification(sender, instance, created, **kwargs):
         else:
             return
 
-    return requests.post(
-        os.getenv('MAILGUN_URL'),
-        auth=("api", os.getenv('MAILGUN_API_KEY')),
-        data={"from": "Автоматическое уведомление <postmaster@sandbox24e837ccfffa4f42a597feb45d64af9d.mailgun.org>",
-              "to": os.environ.get('NOTIFICATIONS_EMAIL', None),
-              "subject": subject,
-              "text": html_content})
+        return requests.post(
+            os.getenv('MAILGUN_URL'),
+            auth=("api", os.getenv('MAILGUN_API_KEY')),
+            data={"from": "Автоматическое уведомление <postmaster@sandbox24e837ccfffa4f42a597feb45d64af9d.mailgun.org>",
+                  "to": os.environ.get('NOTIFICATIONS_EMAIL', None),
+                  "subject": subject,
+                  "text": html_content})
 
 
 post_save.connect(send_email_notification, sender=Order)
