@@ -178,9 +178,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
 if DEBUG:
-    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = '/email-log'  # change this to a proper location
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ABSOLUTEURI_PROTOCOL = 'https'
 
