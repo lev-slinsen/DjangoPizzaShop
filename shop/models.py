@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
@@ -61,30 +61,52 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
 
-def email_notification(sender, instance, created, **kwargs):
+# def email_notification(sender, instance, created, **kwargs):
+#     email = os.environ.get('NOTIFICATIONS_EMAIL', None)
+#     if email and created:
+#         try:
+#             site = Site.objects.get()
+#             from_email = 'Автоматическое уведомление'
+#             to = email
+#
+#             if sender == Order:
+#                 subject = 'Новый заказ'
+#                 text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
+#                 html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
+#             elif sender == Feedback:
+#                 subject = 'Обратный звонок'
+#                 text_content = f'{instance.phone} запросил обратный звонок'
+#                 html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
+#
+#             send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
+#
+#         except Exception as ex:
+#             print(ex)
+
+
+def send_email_notification(sender, instance, created, **kwargs):
     email = os.environ.get('NOTIFICATIONS_EMAIL', None)
     if email and created:
-        try:
-            site = Site.objects.get()
-            from_email = 'Автоматическое уведомление'
-            to = email
+        site = Site.objects.get()
+        if sender == Order:
+            subject = 'Новый заказ'
+            html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
+        elif sender == Feedback:
+            subject = 'Обратный звонок'
+            html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
+        else:
+            return
 
-            if sender == Order:
-                subject = 'Новый заказ'
-                text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-                html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
-            elif sender == Feedback:
-                subject = 'Обратный звонок'
-                text_content = f'{instance.phone} запросил обратный звонок'
-                html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
-
-            send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
-
-        except Exception as ex:
-            print(ex)
+    return requests.post(
+        os.getenv('MAILGUN_URL'),
+        auth=("api", os.getenv('MAILGUN_API_KEY')),
+        data={"from": "Автоматическое уведомление <postmaster@sandbox24e837ccfffa4f42a597feb45d64af9d.mailgun.org>",
+              "to": os.environ.get('NOTIFICATIONS_EMAIL', None),
+              "subject": subject,
+              "text": html_content})
 
 
-post_save.connect(email_notification, sender=Order)
+post_save.connect(send_email_notification, sender=Order)
 
 
 class OrderItem(models.Model):
@@ -144,7 +166,7 @@ class Feedback(models.Model):
         return self.phone
 
 
-post_save.connect(email_notification, sender=Feedback)
+post_save.connect(send_email_notification, sender=Feedback)
 
 
 class File(models.Model):
