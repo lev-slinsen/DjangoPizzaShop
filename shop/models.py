@@ -61,29 +61,6 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
 
-# def email_notification(sender, instance, created, **kwargs):
-#     email = os.environ.get('NOTIFICATIONS_EMAIL', None)
-#     if email and created:
-#         try:
-#             site = Site.objects.get()
-#             from_email = 'Автоматическое уведомление'
-#             to = email
-#
-#             if sender == Order:
-#                 subject = 'Новый заказ'
-#                 text_content = f'{site.domain}/admin/shop/order/{instance.id}/change'
-#                 html_content = f'<a href={site.domain}/admin/shop/order/{instance.id}/change>Новый заказ</a>'
-#             elif sender == Feedback:
-#                 subject = 'Обратный звонок'
-#                 text_content = f'{instance.phone} запросил обратный звонок'
-#                 html_content = f'<a href={site.domain}/admin/shop/feedback/{instance.id}/change>Обратный звонок</a>'
-#
-#             send_mail(subject, text_content, from_email, [to], fail_silently=False, html_message=html_content)
-#
-#         except Exception as ex:
-#             print(ex)
-
-
 def send_email_notification(sender, instance, created, **kwargs):
     email = os.environ.get('NOTIFICATIONS_EMAIL', None)
     if email and created:
@@ -93,6 +70,13 @@ def send_email_notification(sender, instance, created, **kwargs):
             html_content = f'''
                 Новый заказ
                 {site.domain}/admin/shop/order/{instance.id}/change
+                Телефон: {instance.phone}
+                Имя: {instance.first_name}
+                Дата: {instance.delivery_date}
+                Время: {instance.delivery_time}
+                Адрес: {instance.address}
+                Оплата: {instance.payment}
+                Сумма: {instance.total_price()}
                 '''
         elif sender == Feedback:
             subject = 'Обратный звонок'
