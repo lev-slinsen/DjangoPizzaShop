@@ -190,7 +190,7 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["file"]},
     "handlers": {
         "file": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": os.path.join(BASE_DIR, 'django-output.log'),
             "formatter": "app",
