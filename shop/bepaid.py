@@ -9,7 +9,7 @@ logger = logging.getLogger(__file__)
 
 class Bepaid:
     def __init__(self):
-        self.test = settings.DEBUG
+        self.test = bool(settings.DEBUG)
         self.redirect_page = reverse('shop:shop-home')
         # self.redirect = absoluteuri.build_absolute_uri(self.redirect_page)
         self.redirect = 'http://pechorin.by'
