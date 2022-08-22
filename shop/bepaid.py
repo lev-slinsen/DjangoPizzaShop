@@ -44,5 +44,5 @@ class Bepaid:
         # response.json()
         # if settings.DEBUG:
         #     print(f"bepaid redirection link: "+response.json().get('checkout').get('redirect_url'))
-        logger.debug(response.json())
+        logger.error(response.json())
         return response.json().get('checkout').get('redirect_url')
