@@ -32,6 +32,38 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
+ENABLE_LOGGING = bool(os.environ.get('DJANGO_LOGGING', False))
+
+if ENABLE_LOGGING:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "root": {"level": "INFO", "handlers": ["file"]},
+        "handlers": {
+            "file": {
+                "level": "DEBUG",
+                "class": "logging.FileHandler",
+                "filename": os.path.join(BASE_DIR, 'django-output.log'),
+                "formatter": "app",
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["file"],
+                "level": "INFO",
+                "propagate": True
+            },
+        },
+        "formatters": {
+            "app": {
+                "format": (
+                    u"%(asctime)s [%(levelname)-8s] "
+                    "(%(module)s.%(funcName)s) %(message)s"
+                ),
+                "datefmt": "%Y-%m-%d %H:%M:%S",
+            },
+        },
+    }
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [os.environ.get('HOST_NAME', 'localhost'), os.environ.get('HOST_IP', '127.0.0.1')]
@@ -183,34 +215,3 @@ if DEBUG:
 ABSOLUTEURI_PROTOCOL = 'https'
 
 SITE_ID = 1
-
-if os.environ.get('DJANGO_LOGGING'):
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "root": {"level": "INFO", "handlers": ["file"]},
-        "handlers": {
-            "file": {
-                "level": "DEBUG",
-                "class": "logging.FileHandler",
-                "filename": os.path.join(BASE_DIR, 'django-output.log'),
-                "formatter": "app",
-            },
-        },
-        "loggers": {
-            "django": {
-                "handlers": ["file"],
-                "level": "INFO",
-                "propagate": True
-            },
-        },
-        "formatters": {
-            "app": {
-                "format": (
-                    u"%(asctime)s [%(levelname)-8s] "
-                    "(%(module)s.%(funcName)s) %(message)s"
-                ),
-                "datefmt": "%Y-%m-%d %H:%M:%S",
-            },
-        },
-    }
