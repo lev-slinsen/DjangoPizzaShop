@@ -31,8 +31,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
-ENABLE_LOGGING = bool(os.environ.get('DJANGO_LOGGING', False))
+DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', False)))
+ENABLE_LOGGING = bool(int(os.environ.get('DJANGO_LOGGING', False)))
 
 # if ENABLE_LOGGING:
 LOGGING = {
@@ -63,7 +63,7 @@ LOGGING = {
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
-}
+} if ENABLE_LOGGING else None
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [os.environ.get('HOST_NAME', 'localhost'), os.environ.get('HOST_IP', '127.0.0.1')]
