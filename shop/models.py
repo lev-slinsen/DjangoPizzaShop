@@ -1,11 +1,11 @@
 import os, requests
 
 from django.contrib.sites.models import Site
-from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from dotenv import load_dotenv
+from django.conf import settings
 
 from accounts.models import User
 from catalog.models import Pizza, Size
@@ -63,7 +63,7 @@ class Order(models.Model):
 
 def send_email_notification(sender, instance, created, **kwargs):
     email = os.environ.get('NOTIFICATIONS_EMAIL', None)
-    if email and created:
+    if email and created and not settings.ENABLE_LOGGING:
         site = Site.objects.get()
         if sender == Order:
             subject = 'Новый заказ'
@@ -94,6 +94,7 @@ def send_email_notification(sender, instance, created, **kwargs):
                   "to": os.environ.get('NOTIFICATIONS_EMAIL', None),
                   "subject": subject,
                   "text": html_content})
+    pass
 
 
 post_save.connect(send_email_notification, sender=Order)
