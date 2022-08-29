@@ -14,7 +14,7 @@ class Bepaid:
         self.test = settings.DEBUG
         logging.error(settings.DEBUG)
         logging.error(settings.ENABLE_LOGGING)
-        logging.error(os.environ.get('DJANGO_DEBUG'))
+        logging.error(type(os.environ.get('DJANGO_DEBUG')))
         logging.error(bool(os.environ.get('DJANGO_DEBUG', False)))
         self.redirect_page = reverse('shop:shop-home')
         self.redirect = 'http://pechorin.by'
