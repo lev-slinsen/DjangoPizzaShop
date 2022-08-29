@@ -11,6 +11,8 @@ logger = logging.getLogger(__file__)
 class Bepaid:
     def __init__(self):
         self.test = settings.DEBUG
+        logging.error(settings.DEBUG)
+        logging.error(settings.DJANGO_LOGGING)
         self.redirect_page = reverse('shop:shop-home')
         self.redirect = 'http://pechorin.by'
         self.url = 'https://checkout.bepaid.by/ctp/api/checkouts'
