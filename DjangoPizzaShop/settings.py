@@ -63,7 +63,7 @@ LOGGING = {
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
-} if ENABLE_LOGGING else None
+}
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [os.environ.get('HOST_NAME', 'localhost'), os.environ.get('HOST_IP', '127.0.0.1')]
