@@ -4,6 +4,7 @@ import requests
 from django.conf import settings
 from django.urls import reverse
 from requests.auth import HTTPBasicAuth
+import os
 
 logger = logging.getLogger(__file__)
 
@@ -12,7 +13,9 @@ class Bepaid:
     def __init__(self):
         self.test = settings.DEBUG
         logging.error(settings.DEBUG)
-        logging.error(settings.DJANGO_LOGGING)
+        logging.error(settings.ENABLE_LOGGING)
+        logging.error(os.environ.get('DJANGO_DEBUG'))
+        logging.error(bool(os.environ.get('DJANGO_DEBUG', False)))
         self.redirect_page = reverse('shop:shop-home')
         self.redirect = 'http://pechorin.by'
         self.url = 'https://checkout.bepaid.by/ctp/api/checkouts'
